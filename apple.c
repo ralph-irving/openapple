@@ -550,12 +550,6 @@ gint apple_timed (gpointer data)
 {
   apple_time_ticks++;
 
-  if (apple_time_ticks == 1000)
-    {
-      printf("Timed out\n");
-      exit(0);
-    }
-
   if (key_pressed)
     {
       if (key_autorepeat)
