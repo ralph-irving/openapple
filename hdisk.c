@@ -16,6 +16,8 @@
   see the file COPYING. If not, visit the Free Software Foundation website at http://www.fsf.org
 */
 
+#include "apple.h"
+
 #include <gtk/gtk.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -124,7 +126,6 @@ void  i60_RTS (void);
 static r_func_t *  r_table;
 static w_func_t *  w_table;
 
-static GdkWindow *     win_ptr    = 0;
 static unsigned short  hdisk_slot = 0;
 static cpu_state_t     cpu;
 
@@ -529,15 +530,13 @@ void  hdisk_info (unsigned char *  bits)
   *bits = SLOT_CALL;
 }
 
-void  hdisk_init (void *          pwin,
-                  unsigned short  slot,
+void  hdisk_init (unsigned short  slot,
                   cpu_state_t *   cpup,
                   r_func_t *      rtab,
                   w_func_t *      wtab)
 {
   long  drive_size;
 	
-  win_ptr     = pwin;
   hdisk_slot  = slot;
   cpu         = *cpup;
   r_table     = rtab;

@@ -1,4 +1,18 @@
 
+3 February 2002
++ Added XFree86 DGA support. Looks really nice, but it's only half done. The mouse doesn't
+  work in fullscreen mode, and there is no way to control the speed, load disks, etc. I'll
+  probably ditch the GTK event handling and do it all myself, since I have to do it for
+  DGA. I've worked on and off (mostly off) on another 65c02 core for the last few months -
+  especially in the month or so before Christmas. If that eventually gets done the speed
+  should increase a bit, and hopefully I'll get rid of the emulation bugs that I suspect
+  are the reason that PoP has the funny lines (still) and Multiscribe doesn't work. Of
+  course I really need to fix the current 65c02 core too, because it's portable. I'm
+  thinking about redoing the video again too. The rasterize stuff is ok, but I think I
+  can do better.
++ It's hard to believe it's so long since I wrote anything here. I have done a few things
+  between last April and now, but not that much really.
+
 8 April 2001
 + Removed all old video generation code.
 
@@ -60,7 +74,7 @@
 + Finished the AE Ramworks emulation supporting 1Mb bank-switched memory
 
 14 March 2001 (0.52)
-+ Fixed a stupid big whereby the emulator crashed if X was something other than 24 or 32 bpp
++ Fixed a stupid bug whereby the emulator crashed if X was something other than 24 or 32 bpp
 
 11 March 2001 (0.51)
 + Repaired a decimal mode subtraction bug

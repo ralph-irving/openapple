@@ -20,6 +20,8 @@
 #define VERBOSE
 */
 
+#include "apple.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -1145,8 +1147,7 @@ void  d2_info (unsigned char *  bits)
   *bits = 0;
 }
 
-void  d2_init (void *          pwin,
-               unsigned short  slot,
+void  d2_init (unsigned short  slot,
                cpu_state_t *   cpup,
                r_func_t *      rtab,
                w_func_t *      wtab)

@@ -54,7 +54,6 @@ enum
 static r_func_t *      read_table;
 static w_func_t *      write_table;
 
-static GdkWindow *     win_ptr    = 0;
 static unsigned short  am2_slot   = 0;
 
 static unsigned char   am2_mode   = 0;
@@ -131,7 +130,7 @@ static void  am2_clearmouse (void)
 {
   GdkModifierType  state;
 
-  gdk_window_get_pointer(win_ptr, &old_px, &old_py, &state);
+  //gdk_window_get_pointer(win_ptr, &old_px, &old_py, &state);
 
   am2_xpos = 0;
   am2_ypos = 0;
@@ -339,7 +338,7 @@ void  am2_time (void)
     return;
   */
 
-  gdk_window_get_pointer(win_ptr, &px, &py, &state);
+  //gdk_window_get_pointer(win_ptr, &px, &py, &state);
 
   xy_changed = 0;
 
@@ -443,13 +442,11 @@ void  am2_info (unsigned char *  bits)
   *bits = SLOT_CALL | SLOT_TIME;
 }
 
-void  am2_init (void *          pwin,
-                unsigned short  slot,
+void  am2_init (unsigned short  slot,
                 cpu_state_t *   cpup,
                 r_func_t *      rtab,
                 w_func_t *      wtab)
 {
-  win_ptr     = pwin;
   am2_slot    = slot;
   cpu         = *cpup;
   read_table  = rtab;

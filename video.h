@@ -37,32 +37,53 @@ void set_video_mode (void);
 /* rasterizers */
 void text40_mono_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
 void text40_color_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
+void text40_color_dga_rasterizer (int raster_cycles,
+                                  int raster_idx,
+                                  int screen_dot,
+                                  int screen_row);
 
 void text80_mono_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
 void text80_color_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
+void text80_color_dga_rasterizer (int raster_cycles,
+                                  int raster_idx,
+                                  int screen_dot,
+                                  int screen_row);
 
 void gr_mono_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
 void gr_mono_mixed40_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
 void gr_mono_mixed80_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
+
 void gr_color_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
 void gr_color_mixed40_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
 void gr_color_mixed80_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
+void gr_color_dga_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
+void gr_color_mixed40_dga_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
+void gr_color_mixed80_dga_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
 
-void dgr_mono_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
-void dgr_mono_mixed_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
 void dgr_color_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
 void dgr_color_mixed_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
+void dgr_color_dga_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
+void dgr_color_mixed_dga_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
+void dgr_mono_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
+void dgr_mono_mixed_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
 
 void hgr_mono_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
 void hgr_mono_mixed40_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
 void hgr_mono_mixed80_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
+
 void hgr_color_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
 void hgr_color_mixed40_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
 void hgr_color_mixed80_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
+void hgr_color_dga_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
+void hgr_color_mixed40_dga_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
+void hgr_color_mixed80_dga_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
 
 void dhgr_mono_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
 void dhgr_mono_mixed_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
+
 void dhgr_color_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
 void dhgr_color_mixed_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
+void dhgr_color_dga_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
+void dhgr_color_mixed_dga_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row);
 
 #endif /* INCLUDED_VIDEO_H */

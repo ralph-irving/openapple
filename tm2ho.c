@@ -54,7 +54,6 @@ static cpu_state_t     cpu;
 static r_func_t *      read_table;
 static w_func_t *      write_table;
 
-static GdkWindow *     win_ptr       = 0;
 static unsigned short  tm2ho_address = 0;
 
 static unsigned char   tm2ho_mode          = MODE_TIMEMASTER;
@@ -248,13 +247,11 @@ void  tm2ho_info (unsigned char *  bits)
   *bits = SLOT_CALL;
 }
 
-void  tm2ho_init (void *          pwin,
-		  unsigned short  slot,
-		  cpu_state_t *   cpup,
-		  r_func_t *      rtab,
-		  w_func_t *      wtab)
+void  tm2ho_init (unsigned short  slot,
+                  cpu_state_t *   cpup,
+                  r_func_t *      rtab,
+                  w_func_t *      wtab)
 {
-  win_ptr     = pwin;
   cpu         = *cpup;
   read_table  = rtab;
   write_table = wtab;

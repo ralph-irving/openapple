@@ -25,7 +25,7 @@
 /*********/
 
 void  d2_new_disk (int     d_idx,
-		   char *  filename);
+                   char *  filename);
 
 /*********/
 
@@ -40,12 +40,11 @@ void  d2_info (unsigned char *  bits);
 unsigned char  d2_read (unsigned short  addr);
 
 void  d2_write (unsigned short  addr,
-		unsigned char   value);
+                unsigned char   value);
 
-void  d2_init (void *          pwin,
-	       unsigned short  slot,
-	       cpu_state_t *   cpup,
-	       r_func_t *      rtab,
-	       w_func_t *      wtab);
+void  d2_init (unsigned short  slot,
+               cpu_state_t *   cpup,
+               r_func_t *      rtab,
+               w_func_t *      wtab);
 
 #endif /* INCLUDED_FLOPPY_H */

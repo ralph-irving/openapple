@@ -16,12 +16,13 @@
   see the file COPYING. If not, visit the Free Software Foundation website at http://www.fsf.org
 */
 
+#include "apple.h"
+
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "apple.h"
 #include "cpu.h"
 #include "memory.h"
 #include "slots.h"
@@ -962,7 +963,8 @@ void execute_one (void)
   int  call_idx;
   int  slot_idx;
 
-  icount = 16384;
+  //icount = 16384;
+  icount = 65536;
 
   while (icount--)
     {
@@ -1125,8 +1127,11 @@ void execute_one (void)
                   raster_row -= SCAN_HEIGHT;
                   if (++frame_skip >= param_frame_skip) frame_skip = 0;
 #if 1
-                  gtk_widget_draw(screen_da, &(my_GTK.screen_rect));
-                  RESET_SCREEN_RECT();
+                  if (!option_use_xdga)
+                    {
+                      gtk_widget_draw(screen_da, &(my_GTK.screen_rect));
+                      RESET_SCREEN_RECT();
+                    }
 #endif
                   for (slot_idx = 0; slot_idx < last_slot_time; slot_idx++)
                     slot[slot_times[slot_idx]].time();

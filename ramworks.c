@@ -16,6 +16,8 @@
   see the file COPYING. If not, visit the Free Software Foundation website at http://www.fsf.org
 */
 
+#include "apple.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 

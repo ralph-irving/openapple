@@ -16,18 +16,24 @@
   see the file COPYING. If not, visit the Free Software Foundation website at http://www.fsf.org
 */
 
+#include "apple.h"
+
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <sys/time.h>
 #include <gdk/gdkkeysyms.h>
+#include <gdk/gdkx.h>
 #include <gtk/gtk.h>
+#include <X11/Xlib.h>
+#include <X11/keysym.h>
+#include <X11/extensions/xf86dga.h>
 
 #include <sys/time.h>
 #include <unistd.h>
 
-#include "apple.h"
 #include "cpu.h"
 #include "lc.h"
 #include "memory.h"
@@ -42,8 +48,11 @@
 #include "tm2ho.h"
 #include "ext80col.h"
 #include "ramworks.h"
+#include "xdga.h"
 
+#ifdef USE_SDL
 #include "SDL.h"
+#endif
 
 #define SEED_TIME() (srand((unsigned)time(0)))
 #define RANDOM(m)   ((unsigned)((double)(m) * rand() / ((double)RAND_MAX + 1.0)))
@@ -57,13 +66,19 @@ unsigned char option_color_monitor = 1;
 unsigned char option_full_scan     = 0;
 unsigned char option_limit_speed   = 0;
 unsigned char option_use_sdl       = 0;
-unsigned char option_use_gtk       = 1;
+unsigned char option_use_gtk       = 0;
+unsigned char option_use_xdga      = 1;
+unsigned int  option_request_w     = 0;
+unsigned int  option_request_h     = 0;
 
 static unsigned long old_cycle_clock;
 
-/* display variables for GTK+ */
+/* display variables */
 
 struct GTK_data my_GTK = {0,0,0,{0,0,0,0}};
+xdga_info_t xdga;
+int SCREEN_BORDER_WIDTH;
+int SCREEN_BORDER_HEIGHT;
 
 /*********/
 
@@ -95,8 +110,7 @@ extern int trace;
 
 /* */
 
-void  empty_init (void *          pwin,
-                  unsigned short  slot,
+void  empty_init (unsigned short  slot,
                   cpu_state_t *   cpup,
                   r_func_t *      rtab,
                   w_func_t *      wtab)
@@ -213,8 +227,8 @@ static gint expose_event (GtkWidget * widget, GdkEventExpose * event)
   return FALSE;
 }
 
-unsigned       count;
-unsigned long  key_press_time;
+unsigned      count;
+unsigned long key_press_time;
 
 static gint key_press_event (GtkWidget * widget, GdkEventKey * event)
 {
@@ -316,6 +330,119 @@ static gint key_release_event (GtkWidget * widget, GdkEventKey * event)
   return TRUE;
 }
 
+static void x_key_press (KeySym key, unsigned int state)
+{
+  int keyval = 0;
+
+  if (!run) return;
+
+  switch (key)
+    {
+    case XK_Left:
+      keyval = 0x08;
+      break;
+
+    case XK_Up:
+      keyval = 0x0B;
+      break;
+
+    case XK_Right:
+      keyval = 0x15;
+      break;
+
+    case XK_Down:
+      keyval = 0x0A;
+      break;
+
+    case XK_Alt_L:
+    case XK_Meta_L:
+    case XK_Super_L:
+    case XK_Hyper_L:
+      open_apple_pressed = 0x80;
+      return;
+
+    case XK_Alt_R:
+    case XK_Meta_R:
+    case XK_Super_R:
+    case XK_Hyper_R:
+      solid_apple_pressed = 0x80;
+      return;
+
+    case XK_Pause:
+    case XK_Break:
+      slotcxrom_on();
+      interrupt_flags |= F_RESET;
+      return;
+
+    case XK_Page_Down:
+      {
+        char * foo;
+        foo = malloc(80);
+        strcpy(foo, "./ppb.dsk");
+        d2_new_disk(0, foo);
+      }
+      return;
+
+    case XK_Page_Up:
+      {
+        char * foo;
+        foo = malloc(80);
+        strcpy(foo, "./pp0.dsk");
+        d2_new_disk(0, foo);
+      }
+      return;
+
+    default:
+      keyval = key & 0xFF;
+      break;
+    }
+
+  if (keyval < 0x80)
+    {
+      if (state & ControlMask)
+        keyval &= 0x1F;
+
+      kb_byte        = 0x80 | keyval;
+      key_pressed    = 0x80;
+      key_press_time = apple_time_ticks;
+
+      //printf("keyval:%x  kb_byte:%x  kb_strobe:%x\n", keyval, kb_byte, key_pressed);
+
+      //gdk_key_repeat_disable();
+    }
+}
+
+static void x_key_release (KeySym key, unsigned int state)
+{
+  if (!run) return;
+
+  switch (key)
+    {
+    case XK_Alt_L:
+    case XK_Meta_L:
+    case XK_Super_L:
+    case XK_Hyper_L:
+      open_apple_pressed = 0;
+      break;
+
+    case XK_Alt_R:
+    case XK_Meta_R:
+    case XK_Super_R:
+    case XK_Hyper_R:
+      solid_apple_pressed = 0;
+      break;
+
+    default:
+      if ((state & ControlMask) && ((key & 0xFF) >= 0x80))
+        return;
+    }
+
+  key_pressed    = 0;
+  key_autorepeat = 0;
+
+  //gdk_key_repeat_restore();
+}
+
 void toggle_scan (GtkWidget * widget, gpointer data)
 {
   option_full_scan = option_full_scan ? 0 : 1;
@@ -328,8 +455,8 @@ void toggle_color (GtkWidget * widget, gpointer data)
   reset_video();
 }
 
-void  toggle_limit_speed (GtkWidget *  widget,
-                          gpointer     data)
+void toggle_limit_speed (GtkWidget *  widget,
+                         gpointer     data)
 {
   option_limit_speed = 1 - option_limit_speed;
 
@@ -344,8 +471,8 @@ void  toggle_limit_speed (GtkWidget *  widget,
 
 extern unsigned char current_image_type;
 
-void  set_disk_volume (GtkWidget *  widget,
-                       gpointer     data)
+void set_disk_volume (GtkWidget *  widget,
+                      gpointer     data)
 {
   if (d2_volume == 254)
     d2_volume = 1;
@@ -359,10 +486,10 @@ static GtkWidget *  file_select = 0;
 static char *       fs_filename = 0;
 static int          fs_drive    = 0;
 
-static void  fs_ok (GtkWidget *         w,
-                    GtkFileSelection *  fs)
+static void fs_ok (GtkWidget *         w,
+                   GtkFileSelection *  fs)
 {
-  fs_filename = gtk_file_selection_get_filename(GTK_FILE_SELECTION(fs));
+  //fs_filename = gtk_file_selection_get_filename(GTK_FILE_SELECTION(fs));
   fs_filename = (char *)malloc(1 + strlen(fs_filename));
 
   if (fs_filename)
@@ -375,15 +502,15 @@ static void  fs_ok (GtkWidget *         w,
   file_select = 0;
 }
 
-static void  fs_cancel (GtkWidget *         w,
-                        GtkFileSelection *  fs)
+static void fs_cancel (GtkWidget *         w,
+                       GtkFileSelection *  fs)
 {
   fs_filename = 0;
   gtk_widget_destroy(file_select);
   file_select = 0;
 }
 
-static void  select_image (void)
+static void select_image (void)
 {
   if (!file_select)
     {
@@ -422,6 +549,12 @@ void select_drive2_disk (GtkWidget * widget, gpointer data)
 gint apple_timed (gpointer data)
 {
   apple_time_ticks++;
+
+  if (apple_time_ticks == 1000)
+    {
+      printf("Timed out\n");
+      exit(0);
+    }
 
   if (key_pressed)
     {
@@ -550,7 +683,7 @@ void init_cards (void)
     {
       if (slot[page_idx].init)
         {
-          slot[page_idx].init(apple_window->window, page_idx, &cpu_ptrs, r_page, w_page);
+          slot[page_idx].init(page_idx, &cpu_ptrs, r_page, w_page);
 
           slot[page_idx].info(&info_bits);
 
@@ -669,6 +802,7 @@ int init_sdl_video ()
   return 0;
 }
 
+#ifdef USE_SDL
 void fill_apple_audio (void * udata, Uint8 * stream, int buffer_len)
 {
   Uint8 * stream_ptr;
@@ -724,17 +858,32 @@ more_than_enough:
   sample_pos += copy_len;
   */
 }
+#endif
 
 int main (int argc, char *argv[])
 {
+  SCREEN_BORDER_WIDTH = ((WINDOW_WIDTH - SCREEN_WIDTH) / 2);
+  SCREEN_BORDER_HEIGHT = ((WINDOW_HEIGHT - SCREEN_HEIGHT) / 2);
+
   SEED_TIME();
 
   if (option_use_sdl)
     option_use_sdl = init_sdl_video();
 
-  if (!option_use_sdl)
+  if (option_use_xdga)
+    {
+      if (geteuid())
+        {
+          fprintf(stderr, "Must be suid root to use DGA\n");
+          option_use_xdga = 0;
+          option_use_gtk = 1;
+        }
+    }
+
+  if (option_use_gtk)
     init_gtk_video(argc, argv);
 
+#ifdef USE_SDL
   {
     SDL_AudioSpec wanted;
     if (SDL_Init(SDL_INIT_AUDIO) < 0)
@@ -753,6 +902,7 @@ int main (int argc, char *argv[])
     if (SDL_OpenAudio(&wanted, 0) < 0)
       fprintf(stderr, "Couldn't open audio: %s\n", SDL_GetError());
   }
+#endif
 
   /* memory allocation and pointer initialization */
 
@@ -762,6 +912,119 @@ int main (int argc, char *argv[])
   init_memory();
 
   init_video();
+
+  /* BIG NASTY HACK */
+  {
+#define MINMAJOR 2
+#define MINMINOR 0
+    Display * xdisp;
+    XEvent event;
+    XKeyEvent x_key;
+    XDGAKeyEvent * xdga_key;
+    char * fail_reason;
+
+    if (option_use_xdga)
+      {
+        if (0 == (xdisp = XOpenDisplay(0)))
+          {
+            printf("Couldn't open default display\n");
+            exit(1);
+          }
+
+        if (option_request_w == 0) option_request_w = WINDOW_WIDTH;
+        if (option_request_h == 0) option_request_h = WINDOW_HEIGHT;
+
+        if (xdga_mode(xdisp, option_request_w, option_request_h, &xdga, &fail_reason))
+          {
+            long total;
+            struct timeval before;
+            struct timeval after;
+            struct timezone garbage;
+
+            SCREEN_BORDER_WIDTH = ((xdga.width - SCREEN_WIDTH) / 2);
+            SCREEN_BORDER_HEIGHT = ((xdga.height - SCREEN_HEIGHT) / 2);
+
+            printf("Using DGA video mode %dx%dx%d\n", xdga.width, xdga.height, xdga.depth);
+
+            XDGASelectInput(xdga.xdisp, DefaultScreen(xdga.xdisp),
+                            KeyPressMask | KeyReleaseMask | ButtonReleaseMask);
+            run = 1;
+            gettimeofday(&before, &garbage);
+            while (1)
+              {
+                while (XEventsQueued(xdga.xdisp, QueuedAfterFlush))
+                  {
+                    XNextEvent(xdga.xdisp, &event);
+                    switch (event.type)
+                      {
+                      case KeyPress:
+                      case KeyRelease:
+                      case ButtonRelease:
+                        goto end_dga;
+
+                      default:
+                        {
+                          int dga_type = event.type - xdga.event_base;
+                          switch (dga_type)
+                            {
+                            case KeyPress:
+                            case KeyRelease:
+                              {
+                                int index;
+                                KeySym key;
+
+                                xdga_key = (XDGAKeyEvent *)&event;
+                                XDGAKeyEventToXKeyEvent(xdga_key, &x_key);
+                                index = (x_key.state & (ShiftMask | LockMask)) ? 1 : 0;
+                                key = XLookupKeysym(&x_key, index);
+
+                                // printf("key:%x  state:%x\n", key, x_key.state);
+
+                                if (dga_type == KeyPress)
+                                  x_key_press(key, x_key.state);
+                                else
+                                  x_key_release(key, x_key.state);
+                              }
+                              break;
+
+                            case ButtonRelease:
+                              goto end_dga;
+                            }
+                        }
+                      }
+                  }
+
+                execute_one();
+                if ((cycle_clock - old_cycle_clock) > (1024 * 1024))
+                  {
+                    gettimeofday(&after, &garbage);
+
+                    if (after.tv_sec == before.tv_sec)
+                      total = after.tv_usec - before.tv_usec;
+                    else
+                      total = 1000000 * (after.tv_sec - before.tv_sec) + after.tv_usec - before.tv_usec;
+
+                    before = after;
+
+                    printf("%g Mhz\n", (double)(cycle_clock - old_cycle_clock) / 1.024 / (double)total);
+
+                    old_cycle_clock = cycle_clock;
+                  }
+              }
+
+          end_dga:
+            XDGASetMode(xdga.xdisp, DefaultScreen(xdga.xdisp), 0);
+            XFree(xdga.device);
+            XDGACloseFramebuffer(xdga.xdisp, DefaultScreen(xdga.xdisp));
+            exit(0);
+          }
+
+        printf("Can't use DGA: %s\n", fail_reason);
+        exit(1);
+      }
+  }
+
+  option_use_xdga = 0;
   set_video_mode();
 
   SET_SCREEN_RECT();
@@ -770,13 +1033,15 @@ int main (int argc, char *argv[])
 
   gtk_timeout_add(1000 / TICKS_PER_SECOND, apple_timed, 0);
 
+#ifdef USE_SDL
   SDL_PauseAudio(0);
+#endif
+
   gtk_main();
+
+#ifdef USE_SDL
   SDL_CloseAudio();
+#endif
 
   return 0;
 }
-
-
-
-

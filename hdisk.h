@@ -33,8 +33,7 @@ void  hdisk_call (void);
 
 void  hdisk_info (unsigned char *  bits);
 
-void  hdisk_init (void *          pwin,
-                  unsigned short  slot,
+void  hdisk_init (unsigned short  slot,
                   cpu_state_t *   cpup,
                   r_func_t *      rtab,
                   w_func_t *      wtab);

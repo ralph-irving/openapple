@@ -29,14 +29,13 @@ void  tm2ho_time (void);
 unsigned char  tm2ho_read (unsigned short  r_addr);
 
 void  tm2ho_write (unsigned short  w_addr,
-		   unsigned char   w_byte);
+                   unsigned char   w_byte);
 
 void  tm2ho_info (unsigned char *  bits);
 
-void  tm2ho_init (void *          pwin,
-		  unsigned short  slot,
-		  cpu_state_t *   cpup,
-		  r_func_t *      rtab,
-		  w_func_t *      wtab);
+void  tm2ho_init (unsigned short  slot,
+                  cpu_state_t *   cpup,
+                  r_func_t *      rtab,
+                  w_func_t *      wtab);
 
 #endif /* INCLUDED_TM2HO_H */

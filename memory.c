@@ -16,10 +16,12 @@
   see the file COPYING. If not, visit the Free Software Foundation website at http://www.fsf.org
 */
 
+#include "apple.h"
+
 #include <stdio.h>   /* fopen(), fread(), printf() */
 #include <stdlib.h>  /* malloc() */
 
-#include "apple.h"
+#include "cpu.h"     /* raster_row, raster_dot */
 #include "lc.h"      /* language_card_init() */
 #include "slots.h"   /* NUM_CARDSLOTS */
 #include "switches.h"
@@ -48,6 +50,15 @@ unsigned char rom_memory [0x3F00];
 
 unsigned char * text_auxmem;
 unsigned char * hgr_auxmem;
+
+/*********/
+
+unsigned short video_table[24] =
+{
+  0x000, 0x080, 0x100, 0x180, 0x200, 0x280, 0x300, 0x380,
+  0x028, 0x0a8, 0x128, 0x1a8, 0x228, 0x2a8, 0x328, 0x3a8,
+  0x050, 0x0d0, 0x150, 0x1d0, 0x250, 0x2d0, 0x350, 0x3d0
+};
 
 /*********/
 
@@ -397,6 +408,52 @@ unsigned char  r_c0 (unsigned short  r_addr)
     case 0xC062:
       // printf("0x%4.4x : S-Apple?\n", emPC);
       return solid_apple_pressed;
+
+#if 1
+    case 0xC070:
+      {
+        unsigned char video_byte;
+        int video_addr;
+        int video_row;
+        int video_dot;
+
+        if (apple_vbl)
+          {
+            video_row = raster_row - SCREEN_BORDER_HEIGHT;
+            if (raster_dot < SCREEN_BORDER_WIDTH || raster_dot >= (SCREEN_BORDER_WIDTH + SCREEN_WIDTH))
+              video_dot = SCREEN_WIDTH - 1;
+            else
+              video_dot = raster_dot - SCREEN_BORDER_WIDTH;
+          }
+        else
+          {
+            video_row = SCREEN_HEIGHT - 1;
+            video_dot = SCREEN_WIDTH - 1;
+          }
+
+        video_dot /= 14;
+
+        if (!switch_graphics || !switch_hires)
+          {
+            video_addr = video_table[video_row / 8] + video_dot + 0x400;
+            if (switch_page2 && !switch_80store) video_addr += 0x400;
+          }
+        else if (switch_mixed && video_row >= 192)
+          {
+            video_addr = video_table[video_row / 8] + video_dot + 0x400;
+            if (switch_page2 && !switch_80store) video_addr += 0x400;
+          }
+        else
+          {
+            video_addr = video_table[video_row / 8] + ((video_row % 8) * 0x400) + video_dot + 0x2000;
+            if (switch_page2 && !switch_80store) video_addr += 0x2000;
+          }
+
+        video_byte = READ(video_addr);
+        /* printf("c070: ($%4.4x) = $%2.2x\n", video_addr, video_byte); */
+        return video_byte;
+      }
+#endif
 
     case 0xC07E:
       if (!switch_ioudis) return 0x80;

@@ -33,10 +33,9 @@ void  am2_write (unsigned short  w_addr,
 
 void  am2_info (unsigned char *  bits);
 
-void  am2_init (void *          pwin,
-		unsigned short  slot,
-		cpu_state_t *   cpup,
-		r_func_t *      rtab,
-		w_func_t *      wtab);
+void  am2_init (unsigned short  slot,
+                cpu_state_t *   cpup,
+                r_func_t *      rtab,
+                w_func_t *      wtab);
 
 #endif /* INCLUDED_MOUSE_H */

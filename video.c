@@ -17,6 +17,7 @@
 */
 
 #include <stdio.h>
+#include <stdint.h>
 
 #include "apple.h"
 #include "charset.h"
@@ -329,9 +330,9 @@ void init_video (void)
           gdk_colormap_alloc_color(my_colormap, &my_color, 0, 1);
           gdk_gc_set_foreground(color_half_gc[idx], &my_color);
         }
-    }
 
-  set_scan();
+      set_scan();
+    }
 }
 
 /****************************/
@@ -355,16 +356,36 @@ void set_video_mode (void)
                   if (option_color_monitor)
                     {
                       if (switch_mixed)
-                        rasterizer = dhgr_color_mixed_rasterizer;
+                        {
+                          if (option_use_xdga)
+                            rasterizer = dhgr_color_mixed_dga_rasterizer;
+                          else
+                            rasterizer = dhgr_color_mixed_rasterizer;
+                        }
                       else
-                        rasterizer = dhgr_color_rasterizer;
+                        {
+                          if (option_use_xdga)
+                            rasterizer = dhgr_color_dga_rasterizer;
+                          else
+                            rasterizer = dhgr_color_rasterizer;
+                        }
                     }
                   else
                     {
                       if (switch_mixed)
-                        rasterizer = dhgr_mono_mixed_rasterizer;
+                        {
+                          if (option_use_xdga)
+                            rasterizer = dhgr_color_mixed_dga_rasterizer;
+                          else
+                            rasterizer = dhgr_mono_mixed_rasterizer;
+                        }
                       else
-                        rasterizer = dhgr_mono_rasterizer;
+                        {
+                          if (option_use_xdga)
+                            rasterizer = dhgr_color_dga_rasterizer;
+                          else
+                            rasterizer = dhgr_mono_rasterizer;
+                        }
                     }
 
                   for (idx = 0; idx < NUM_VIDEO_ROWS; ++idx)
@@ -382,16 +403,36 @@ void set_video_mode (void)
                   if (option_color_monitor)
                     {
                       if (switch_mixed)
-                        rasterizer = dhgr_color_mixed_rasterizer;
+                        {
+                          if (option_use_xdga)
+                            rasterizer = dhgr_color_mixed_dga_rasterizer;
+                          else
+                            rasterizer = dhgr_color_mixed_rasterizer;
+                        }
                       else
-                        rasterizer = dhgr_color_rasterizer;
+                        {
+                          if (option_use_xdga)
+                            rasterizer = dhgr_color_dga_rasterizer;
+                          else
+                            rasterizer = dhgr_color_rasterizer;
+                        }
                     }
                   else
                     {
                       if (switch_mixed)
-                        rasterizer = dhgr_mono_mixed_rasterizer;
+                        {
+                          if (option_use_xdga)
+                            rasterizer = dhgr_color_mixed_dga_rasterizer;
+                          else
+                            rasterizer = dhgr_mono_mixed_rasterizer;
+                        }
                       else
-                        rasterizer = dhgr_mono_rasterizer;
+                        {
+                          if (option_use_xdga)
+                            rasterizer = dhgr_color_dga_rasterizer;
+                          else
+                            rasterizer = dhgr_mono_rasterizer;
+                        }
                     }
 
                   for (idx = 0; idx < NUM_VIDEO_ROWS; ++idx)
@@ -414,24 +455,54 @@ void set_video_mode (void)
                       if (switch_mixed)
                         {
                           if (switch_80col)
-                            rasterizer = hgr_color_mixed80_rasterizer;
+                              {
+                                if (option_use_xdga)
+                                  rasterizer = hgr_color_mixed80_dga_rasterizer;
+                                else
+                                  rasterizer = hgr_color_mixed80_rasterizer;
+                              }
                           else
-                            rasterizer = hgr_color_mixed40_rasterizer;
+                              {
+                                if (option_use_xdga)
+                                  rasterizer = hgr_color_mixed40_dga_rasterizer;
+                                else
+                                  rasterizer = hgr_color_mixed40_rasterizer;
+                              }
                         }
                       else
-                        rasterizer = hgr_color_rasterizer;
+                        {
+                          if (option_use_xdga)
+                            rasterizer = hgr_color_dga_rasterizer;
+                          else
+                            rasterizer = hgr_color_rasterizer;
+                        }
                     }
                   else
                     {
                       if (switch_mixed)
                         {
                           if (switch_80col)
-                            rasterizer = hgr_mono_mixed80_rasterizer;
+                            {
+                              if (option_use_xdga)
+                                rasterizer = hgr_color_mixed80_dga_rasterizer;
+                              else
+                                rasterizer = hgr_mono_mixed80_rasterizer;
+                            }
                           else
-                            rasterizer = hgr_mono_mixed40_rasterizer;
+                            {
+                              if (option_use_xdga)
+                                rasterizer = hgr_color_mixed40_dga_rasterizer;
+                              else
+                                rasterizer = hgr_mono_mixed40_rasterizer;
+                            }
                         }
                       else
-                        rasterizer = hgr_mono_rasterizer;
+                        {
+                          if (option_use_xdga)
+                            rasterizer = hgr_color_dga_rasterizer;
+                          else
+                            rasterizer = hgr_mono_rasterizer;
+                        }
                     }
 
                   for (idx = 0; idx < NUM_VIDEO_ROWS; ++idx)
@@ -451,24 +522,54 @@ void set_video_mode (void)
                       if (switch_mixed)
                         {
                           if (switch_80col)
-                            rasterizer = hgr_color_mixed80_rasterizer;
+                            {
+                              if (option_use_xdga)
+                                rasterizer = hgr_color_mixed80_dga_rasterizer;
+                              else
+                                rasterizer = hgr_color_mixed80_rasterizer;
+                            }
                           else
-                            rasterizer = hgr_color_mixed40_rasterizer;
+                            {
+                              if (option_use_xdga) 
+                                rasterizer = hgr_color_mixed40_dga_rasterizer;
+                              else
+                                rasterizer = hgr_color_mixed40_rasterizer;
+                            }
                         }
                       else
-                        rasterizer = hgr_color_rasterizer;
+                        {
+                          if (option_use_xdga)
+                            rasterizer = hgr_color_dga_rasterizer;
+                          else
+                            rasterizer = hgr_color_rasterizer;
+                        }
                     }
                   else
                     {
                       if (switch_mixed)
                         {
                           if (switch_80col)
-                            rasterizer = hgr_mono_mixed80_rasterizer;
+                            {
+                              if (option_use_xdga)
+                                rasterizer = hgr_color_mixed80_dga_rasterizer;
+                              else
+                                rasterizer = hgr_mono_mixed80_rasterizer;
+                            }
                           else
-                            rasterizer = hgr_mono_mixed40_rasterizer;
+                            {
+                              if (option_use_xdga) 
+                                rasterizer = hgr_color_mixed40_dga_rasterizer;
+                              else
+                                rasterizer = hgr_mono_mixed40_rasterizer;
+                            }
                         }
                       else
-                        rasterizer = hgr_mono_rasterizer;
+                        {
+                          if (option_use_xdga)
+                            rasterizer = hgr_color_dga_rasterizer;
+                          else
+                            rasterizer = hgr_mono_rasterizer;
+                        }
                     }
 
                   for (idx = 0; idx < NUM_VIDEO_ROWS; ++idx)
@@ -492,16 +593,36 @@ void set_video_mode (void)
                   if (option_color_monitor)
                     {
                       if (switch_mixed)
-                        rasterizer = dgr_color_mixed_rasterizer;
+                        {
+                          if (option_use_xdga)
+                            rasterizer = dgr_color_mixed_dga_rasterizer;
+                          else
+                            rasterizer = dgr_color_mixed_rasterizer;
+                        }
                       else
-                        rasterizer = dgr_color_rasterizer;
+                        {
+                          if (option_use_xdga)
+                            rasterizer = dgr_color_dga_rasterizer;
+                          else
+                            rasterizer = dgr_color_rasterizer;
+                        }
                     }
                   else
                     {
                       if (switch_mixed)
-                        rasterizer = dgr_mono_mixed_rasterizer;
+                        {
+                          if (option_use_xdga)
+                            rasterizer = dgr_color_mixed_dga_rasterizer;
+                          else
+                            rasterizer = dgr_mono_mixed_rasterizer;
+                        }
                       else
-                        rasterizer = dgr_mono_rasterizer;
+                        {
+                          if (option_use_xdga)
+                            rasterizer = dgr_color_dga_rasterizer;
+                          else
+                            rasterizer = dgr_mono_rasterizer;
+                        }
                     }
 
                   for (idx = 0; idx < NUM_VIDEO_ROWS; ++idx)
@@ -519,16 +640,36 @@ void set_video_mode (void)
                   if (option_color_monitor)
                     {
                       if (switch_mixed)
-                        rasterizer = dgr_color_mixed_rasterizer;
-                      else
-                        rasterizer = dgr_color_rasterizer;
+                        {
+                          if (option_use_xdga)
+                            rasterizer = dgr_color_mixed_dga_rasterizer;
+                          else
+                            rasterizer = dgr_color_mixed_rasterizer;
+                            }
+                        else
+                          {
+                          if (option_use_xdga)
+                            rasterizer = dgr_color_dga_rasterizer;
+                          else
+                            rasterizer = dgr_color_rasterizer;
+                          }
                     }
                   else
                     {
                       if (switch_mixed)
-                        rasterizer = dgr_mono_mixed_rasterizer;
+                        {
+                          if (option_use_xdga)
+                            rasterizer = dgr_color_mixed_dga_rasterizer;
+                          else
+                            rasterizer = dgr_mono_mixed_rasterizer;
+                        }
                       else
-                        rasterizer = dgr_mono_rasterizer;
+                        {
+                          if (option_use_xdga)
+                            rasterizer = dgr_color_dga_rasterizer;
+                          else
+                            rasterizer = dgr_mono_rasterizer;
+                        }
                     }
 
                   for (idx = 0; idx < NUM_VIDEO_ROWS; ++idx)
@@ -551,24 +692,54 @@ void set_video_mode (void)
                       if (option_color_monitor)
                         {
                           if (switch_80col)
-                            rasterizer = gr_color_mixed80_rasterizer;
+                            {
+                              if (option_use_xdga)
+                                rasterizer = gr_color_mixed80_dga_rasterizer;
+                              else
+                                rasterizer = gr_color_mixed80_rasterizer;
+                            }
                           else
-                            rasterizer = gr_color_mixed40_rasterizer;
+                            {
+                              if (option_use_xdga)
+                                rasterizer = gr_color_mixed40_dga_rasterizer;
+                              else
+                                rasterizer = gr_color_mixed40_rasterizer;
+                            }
                         }
                       else
                         {
                           if (switch_80col)
-                            rasterizer = gr_mono_mixed80_rasterizer;
+                            {
+                              if (option_use_xdga)
+                                rasterizer = gr_color_mixed80_dga_rasterizer;
+                              else
+                                rasterizer = gr_mono_mixed80_rasterizer;
+                            }
                           else
-                            rasterizer = gr_mono_mixed40_rasterizer;
+                            {
+                              if (option_use_xdga)
+                                rasterizer = gr_color_mixed40_dga_rasterizer;
+                              else
+                                rasterizer = gr_mono_mixed40_rasterizer;
+                            }
                         }
                     }
                   else
                     {
                       if (option_color_monitor)
-                        rasterizer = gr_color_rasterizer;
+                        {
+                          if (option_use_xdga)
+                            rasterizer = gr_color_dga_rasterizer;
+                          else
+                            rasterizer = gr_color_rasterizer;
+                        }
                       else
-                        rasterizer = gr_mono_rasterizer;
+                        {
+                          if (option_use_xdga)
+                            rasterizer = gr_color_dga_rasterizer;
+                          else
+                            rasterizer = gr_mono_rasterizer;
+                        }
                     }
 
                   for (idx = 0; idx < NUM_VIDEO_ROWS; ++idx)
@@ -588,24 +759,54 @@ void set_video_mode (void)
                       if (option_color_monitor)
                         {
                           if (switch_80col)
-                            rasterizer = gr_color_mixed80_rasterizer;
+                            {
+                              if (option_use_xdga)
+                                rasterizer = gr_color_mixed80_dga_rasterizer;
+                              else
+                                rasterizer = gr_color_mixed80_rasterizer;
+                            }
                           else
-                            rasterizer = gr_color_mixed40_rasterizer;
+                            {
+                              if (option_use_xdga)
+                                rasterizer = gr_color_mixed40_dga_rasterizer;
+                              else
+                                rasterizer = gr_color_mixed40_rasterizer;
+                            }
                         }
                       else
                         {
                           if (switch_80col)
-                            rasterizer = gr_mono_mixed80_rasterizer;
+                            {
+                              if (option_use_xdga)
+                                rasterizer = gr_color_mixed80_dga_rasterizer;
+                              else
+                                rasterizer = gr_mono_mixed80_rasterizer;
+                            }
                           else
-                            rasterizer = gr_mono_mixed40_rasterizer;
+                            {
+                              if (option_use_xdga)
+                                rasterizer = gr_color_mixed40_dga_rasterizer;
+                              else
+                                rasterizer = gr_mono_mixed40_rasterizer;
+                            }
                         }
                     }
                   else
                     {
                       if (option_color_monitor)
-                        rasterizer = gr_color_rasterizer;
+                        {
+                          if (option_use_xdga)
+                            rasterizer = gr_color_dga_rasterizer;
+                          else
+                            rasterizer = gr_color_rasterizer;
+                        }
                       else
-                        rasterizer = gr_mono_rasterizer;
+                        {
+                          if (option_use_xdga)
+                            rasterizer = gr_color_dga_rasterizer;
+                          else
+                            rasterizer = gr_mono_rasterizer;
+                        }
                     }
 
                   for (idx = 0; idx < NUM_VIDEO_ROWS; ++idx)
@@ -622,9 +823,19 @@ void set_video_mode (void)
       if (switch_80col)
         {
           if (option_color_monitor)
-            rasterizer = text80_color_rasterizer;
+            {
+              if (option_use_xdga)
+                rasterizer = text80_color_dga_rasterizer;
+              else
+                rasterizer = text80_color_rasterizer;
+            }
           else
-            rasterizer = text80_mono_rasterizer;
+            {
+              if (option_use_xdga)
+                rasterizer = text80_color_dga_rasterizer;
+              else
+                rasterizer = text80_mono_rasterizer;
+            }
 
           if (switch_page2)
             {
@@ -654,9 +865,19 @@ void set_video_mode (void)
       else
         {
           if (option_color_monitor)
-            rasterizer = text40_color_rasterizer;
+            {
+              if (option_use_xdga)
+                rasterizer = text40_color_dga_rasterizer;
+              else
+                rasterizer = text40_color_rasterizer;
+            }
           else
-            rasterizer = text40_mono_rasterizer;
+            {
+              if (option_use_xdga)
+                rasterizer = text40_color_dga_rasterizer;
+              else
+                rasterizer = text40_mono_rasterizer;
+            }
 
           if (switch_page2)
             {
@@ -1181,61 +1402,131 @@ void hgr_p2_write (unsigned short w_addr, unsigned char w_byte)
 
 /************************************/
 
+#define CHECK_RASTER() do\
+{\
+  /* beam is now below the screen -- no more work to do */\
+  if (screen_row >= SCREEN_HEIGHT) goto rasterize_done;\
+\
+  /* beam is now to the right of the screen -- check for a wrap */\
+  if (screen_dot >= SCREEN_WIDTH)\
+    {\
+      /* wrap, cross the border and see if all the time is gone */\
+      raster_idx += (SCAN_WIDTH - screen_dot);\
+      if (raster_idx >= raster_cycles) goto rasterize_done;\
+      screen_dot = 0;\
+      screen_row += SCANLINE_INCR;\
+      /* just in case the beam wrapped off the bottom of the screen */\
+      if (screen_row >= SCREEN_HEIGHT) goto rasterize_done;\
+\
+      /* really should repeat the "dirty" region checks here */\
+    }\
+} while(0)
+
+#define CHECK_RASTER_DGA() do\
+{\
+  /* beam is now below the screen -- no more work to do */\
+  if (screen_row >= SCREEN_HEIGHT) goto rasterize_done;\
+\
+  /* beam is now to the right of the screen -- check for a wrap */\
+  if (screen_dot >= SCREEN_WIDTH)\
+    {\
+      /* wrap, cross the border and see if all the time is gone */\
+      raster_idx += (SCAN_WIDTH - screen_dot);\
+      if (raster_idx >= raster_cycles) goto rasterize_done;\
+      screen_dot = 0;\
+      screen_row += SCANLINE_INCR;\
+      /* just in case the beam wrapped off the bottom of the screen */\
+      if (screen_row >= SCREEN_HEIGHT) goto rasterize_done;\
+\
+      xdga_line1  = xdga.base;\
+      xdga_line1 += (xdga.bytes_per_line * (SCREEN_BORDER_HEIGHT + screen_row));\
+      xdga_line1 += (xdga.bytes_per_pixel * (SCREEN_BORDER_WIDTH + screen_dot));\
+      xdga_line2  = xdga_line1 + xdga.bytes_per_line;\
+      /* really should repeat the "dirty" region checks here */\
+    }\
+} while(0)
+
+#define TOUCH_DIRTY_AREA() do\
+{\
+  if ((SCREEN_BORDER_WIDTH + screen_dot) < my_GTK.screen_rect.x)\
+    {\
+      my_GTK.screen_rect.width += (my_GTK.screen_rect.x - (SCREEN_BORDER_WIDTH + screen_dot));\
+      my_GTK.screen_rect.x = (SCREEN_BORDER_WIDTH + screen_dot);\
+    }\
+  else if ((SCREEN_BORDER_WIDTH + screen_dot + 2) > (my_GTK.screen_rect.x + my_GTK.screen_rect.width))\
+    {\
+      my_GTK.screen_rect.width = (SCREEN_BORDER_WIDTH + screen_dot + 2) - my_GTK.screen_rect.x;\
+    }\
+\
+  if ((SCREEN_BORDER_HEIGHT + screen_row) < my_GTK.screen_rect.y)\
+    {\
+      my_GTK.screen_rect.height += (my_GTK.screen_rect.y - (SCREEN_BORDER_HEIGHT + screen_row));\
+      my_GTK.screen_rect.y = (SCREEN_BORDER_HEIGHT + screen_row);\
+    }\
+  else if ((SCREEN_BORDER_HEIGHT + screen_row + 2) > (my_GTK.screen_rect.y + my_GTK.screen_rect.height))\
+    my_GTK.screen_rect.height = (SCREEN_BORDER_HEIGHT + screen_row + 2) - my_GTK.screen_rect.y;\
+} while(0)
+
+/************************************/
+
+#define RASTER_SETUP(left, right) do\
+{\
+  /*\
+   * look for cases where the beam is over "clean" (unchanged) pixels\
+   */\
+\
+  /* beam is currently left of the "dirty" area */\
+  if (screen_dot < left[screen_row / 2])\
+    {\
+      /* advance to changed dots, and see if all the time is gone */\
+      raster_idx += left[screen_row / 2] - screen_dot;\
+      if (raster_idx >= raster_cycles) return;\
+      screen_dot = left[screen_row / 2];\
+    }\
+  /* beam is to the right of the "dirty" area */\
+  else if (screen_dot >= right[screen_row / 2])\
+    {\
+      /* advance to end of row and see if all the time is gone */\
+      raster_idx += SCREEN_WIDTH - screen_dot;\
+      if (raster_idx >= raster_cycles) return;\
+      screen_dot = SCREEN_WIDTH;\
+    }\
+\
+  /*\
+   * try to mark parts of the current row "clean"\
+   */\
+\
+  /* advance the left side of the "dirty" area, if possible */\
+  if (screen_dot == left[screen_row / 2])\
+    {\
+      left[screen_row / 2] += (raster_cycles - raster_idx);\
+\
+      /* mark the whole row as "clean" if possible */\
+      if (left[screen_row / 2] >= right[screen_row / 2])\
+        {\
+          right[screen_row / 2] = 0;\
+        }\
+    }\
+  else if (screen_dot < right[screen_row / 2])\
+    {\
+      /* mark the end of the "dirty" area as now being "clean" */\
+      if ((screen_dot + (raster_cycles - raster_idx)) >= right[screen_row / 2])\
+        {\
+          right[screen_row / 2] = screen_dot;\
+        }\
+    }\
+\
+  /*\
+   * finally update when necessary\
+   */\
+} while(0)
+
 void text40_color_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row)
 {
   unsigned short * bits;
   unsigned short * last;
 
-  /*
-   * look for cases where the beam is over "clean" (unchanged) pixels
-   */
-
-  /* beam is currently left of the "dirty" area */
-  if (screen_dot < text40_left[screen_row / 2])
-    {
-      /* advance to changed dots, and see if all the time is gone */
-      raster_idx += text40_left[screen_row / 2] - screen_dot;
-      if (raster_idx >= raster_cycles) return;
-      screen_dot = text40_left[screen_row / 2];
-    }
-  /* beam is to the right of the "dirty" area */
-  else if (screen_dot >= text40_right[screen_row / 2])
-    {
-      /* advance to end of row and see if all the time is gone */
-      raster_idx += SCREEN_WIDTH - screen_dot;
-      if (raster_idx >= raster_cycles) return;
-      screen_dot = SCREEN_WIDTH;
-    }
-
-  /*
-   * try to mark parts of the current row "clean"
-   */
-
-  /* advance the left side of the "dirty" area, if possible */
-  if (screen_dot == text40_left[screen_row / 2])
-    {
-      text40_left[screen_row / 2] += (raster_cycles - raster_idx);
-
-      /* mark the whole row as "clean" if possible */
-      if (text40_left[screen_row / 2] >= text40_right[screen_row / 2])
-        {
-          text40_right[screen_row / 2] = 0;
-        }
-    }
-  else if (screen_dot < text40_right[screen_row / 2])
-    {
-      /* mark the end of the "dirty" area as now being "clean" */
-      if ((screen_dot + (raster_cycles - raster_idx)) >= text40_right[screen_row / 2])
-        {
-          text40_right[screen_row / 2] = screen_dot;
-        }
-    }
-
-  /*
-   * finally update when necessary
-   */
-
-  /* 40 char * 7 dots * screen_row / SCANLINE_INCR => (140 * screen_row) */
+  RASTER_SETUP(text40_left, text40_right);
 
   last  = (unsigned short *)video_last;
   last += ((140 * screen_row) + (screen_dot / 2));
@@ -1244,22 +1535,7 @@ void text40_color_rasterizer (int raster_cycles, int raster_idx, int screen_dot,
 
   for ( ; raster_idx < raster_cycles; raster_idx += 2)
     {
-      /* beam is now below the screen -- no more work to do */
-      if (screen_row >= SCREEN_HEIGHT) goto rasterize_done;
-
-      /* beam is now to the right of the screen -- check for a wrap */
-      if (screen_dot >= SCREEN_WIDTH)
-        {
-          /* wrap, cross the border and see if all the time is gone */
-          raster_idx += (SCAN_WIDTH - screen_dot);
-          if (raster_idx >= raster_cycles) goto rasterize_done;
-          screen_dot = 0;
-          screen_row += SCANLINE_INCR;
-          /* just in case the beam wrapped off the bottom of the screen */
-          if (screen_row >= SCREEN_HEIGHT) goto rasterize_done;
-
-          /* really should repeat the "dirty" region checks here */
-        }
+      CHECK_RASTER();
 
       if (*bits != *last)
         {
@@ -1286,23 +1562,7 @@ void text40_color_rasterizer (int raster_cycles, int raster_idx, int screen_dot,
                              SCREEN_BORDER_WIDTH + screen_dot + 1, SCREEN_BORDER_HEIGHT + screen_row + 1);
             }
 
-          if ((SCREEN_BORDER_WIDTH + screen_dot) < my_GTK.screen_rect.x)
-            {
-              my_GTK.screen_rect.width += (my_GTK.screen_rect.x - (SCREEN_BORDER_WIDTH + screen_dot));
-              my_GTK.screen_rect.x = (SCREEN_BORDER_WIDTH + screen_dot);
-            }
-          else if ((SCREEN_BORDER_WIDTH + screen_dot + 2) > (my_GTK.screen_rect.x + my_GTK.screen_rect.width))
-            {
-              my_GTK.screen_rect.width = (SCREEN_BORDER_WIDTH + screen_dot + 2) - my_GTK.screen_rect.x;
-            }
-
-          if ((SCREEN_BORDER_HEIGHT + screen_row) < my_GTK.screen_rect.y)
-            {
-              my_GTK.screen_rect.height += (my_GTK.screen_rect.y - (SCREEN_BORDER_HEIGHT + screen_row));
-              my_GTK.screen_rect.y = (SCREEN_BORDER_HEIGHT + screen_row);
-            }
-          else if ((SCREEN_BORDER_HEIGHT + screen_row + 2) > (my_GTK.screen_rect.y + my_GTK.screen_rect.height))
-            my_GTK.screen_rect.height = (SCREEN_BORDER_HEIGHT + screen_row + 2) - my_GTK.screen_rect.y;
+          TOUCH_DIRTY_AREA();
         }
 
       *last++ = *bits++;
@@ -1314,6 +1574,72 @@ void text40_color_rasterizer (int raster_cycles, int raster_idx, int screen_dot,
   gtk_widget_draw(screen_da, &(my_GTK.screen_rect));
   RESET_SCREEN_RECT();
 #endif
+  ;
+}
+
+/************************************/
+
+void text40_color_dga_rasterizer (int raster_cycles,
+                                  int raster_idx,
+                                  int screen_dot,
+                                  int screen_row)
+{
+  unsigned short * bits;
+  unsigned short * last;
+  char * xdga_line1;
+  char * xdga_line2;
+
+  RASTER_SETUP(text40_left, text40_right);
+
+  last  = (unsigned short *)video_last;
+  last += ((140 * screen_row) + (screen_dot / 2));
+  bits  = (unsigned short *)text40_bits;
+  bits += ((140 * screen_row) + (screen_dot / 2));
+
+  xdga_line1  = xdga.base;
+  xdga_line1 += (xdga.bytes_per_line * (SCREEN_BORDER_HEIGHT + screen_row));
+  xdga_line1 += (xdga.bytes_per_pixel * (SCREEN_BORDER_WIDTH + screen_dot));
+  xdga_line2  = xdga_line1 + xdga.bytes_per_line;
+
+  for ( ; raster_idx < raster_cycles; raster_idx += 2)
+    {
+      CHECK_RASTER_DGA();
+
+      if (*bits != *last)
+        {
+          if (xdga.bytes_per_pixel == 1)
+            {
+              char pixel = (*bits & 1) ? 15 : 0;
+              xdga_line1[0] = pixel;
+              xdga_line1[1] = pixel;
+              xdga_line2[0] = pixel;
+              xdga_line2[1] = pixel;
+            }
+          else if (xdga.bytes_per_pixel == 2)
+            {
+              short pixel = (*bits & 1) ? 0x7FFF : 0;
+              ((short *)xdga_line1)[0] = pixel;
+              ((short *)xdga_line1)[1] = pixel;
+              ((short *)xdga_line2)[0] = pixel;
+              ((short *)xdga_line2)[1] = pixel;
+            }
+          else
+            {
+              long pixel = (*bits & 1) ? 0xFFFFFF : 0;
+              ((long *)xdga_line1)[0] = pixel;
+              ((long *)xdga_line1)[1] = pixel;
+              ((long *)xdga_line2)[0] = pixel;
+              ((long *)xdga_line2)[1] = pixel;
+            }
+        }
+
+      *last++ = *bits++;
+      screen_dot += 2;
+      xdga_line1 += (2 * xdga.bytes_per_pixel);
+      xdga_line2 += (2 * xdga.bytes_per_pixel);
+    }
+ rasterize_done:
+  ;
 }
 
 /************************************/
@@ -1323,56 +1649,7 @@ void text40_mono_rasterizer (int raster_cycles, int raster_idx, int screen_dot, 
   unsigned short * bits;
   unsigned short * last;
 
-  /*
-   * look for cases where the beam is over "clean" (unchanged) pixels
-   */
-
-  /* beam is currently left of the "dirty" area */
-  if (screen_dot < text40_left[screen_row / 2])
-    {
-      /* advance to changed dots, and see if all the time is gone */
-      raster_idx += text40_left[screen_row / 2] - screen_dot;
-      if (raster_idx >= raster_cycles) return;
-      screen_dot = text40_left[screen_row / 2];
-    }
-  /* beam is to the right of the "dirty" area */
-  else if (screen_dot >= text40_right[screen_row / 2])
-    {
-      /* advance to end of row and see if all the time is gone */
-      raster_idx += SCREEN_WIDTH - screen_dot;
-      if (raster_idx >= raster_cycles) return;
-      screen_dot = SCREEN_WIDTH;
-    }
-
-  /*
-   * try to mark parts of the current row "clean"
-   */
-
-  /* advance the left side of the "dirty" area, if possible */
-  if (screen_dot == text40_left[screen_row / 2])
-    {
-      text40_left[screen_row / 2] += (raster_cycles - raster_idx);
-
-      /* mark the whole row as "clean" if possible */
-      if (text40_left[screen_row / 2] >= text40_right[screen_row / 2])
-        {
-          text40_right[screen_row / 2] = 0;
-        }
-    }
-  else if (screen_dot < text40_right[screen_row / 2])
-    {
-      /* mark the end of the "dirty" area as now being "clean" */
-      if ((screen_dot + (raster_cycles - raster_idx)) >= text40_right[screen_row / 2])
-        {
-          text40_right[screen_row / 2] = screen_dot;
-        }
-    }
-
-  /*
-   * finally update when necessary
-   */
-
-  /* 40 char * 7 dots * screen_row / SCANLINE_INCR => (140 * screen_row) */
+  RASTER_SETUP(text40_left, text40_right);
 
   last  = (unsigned short *)video_last;
   last += ((140 * screen_row) + (screen_dot / 2));
@@ -1381,22 +1658,7 @@ void text40_mono_rasterizer (int raster_cycles, int raster_idx, int screen_dot, 
 
   for ( ; raster_idx < raster_cycles; raster_idx += 2)
     {
-      /* beam is now below the screen -- no more work to do */
-      if (screen_row >= SCREEN_HEIGHT) goto rasterize_done;
-
-      /* beam is now to the right of the screen -- check for a wrap */
-      if (screen_dot >= SCREEN_WIDTH)
-        {
-          /* wrap, cross the border and see if all the time is gone */
-          raster_idx += (SCAN_WIDTH - screen_dot);
-          if (raster_idx >= raster_cycles) goto rasterize_done;
-          screen_dot = 0;
-          screen_row += SCANLINE_INCR;
-          /* just in case the beam wrapped off the bottom of the screen */
-          if (screen_row >= SCREEN_HEIGHT) goto rasterize_done;
-
-          /* really should repeat the "dirty" region checks here */
-        }
+      CHECK_RASTER();
 
       if (*bits != *last)
         {
@@ -1423,23 +1685,7 @@ void text40_mono_rasterizer (int raster_cycles, int raster_idx, int screen_dot, 
                              SCREEN_BORDER_WIDTH + screen_dot + 1, SCREEN_BORDER_HEIGHT + screen_row + 1);
             }
 
-          if ((SCREEN_BORDER_WIDTH + screen_dot) < my_GTK.screen_rect.x)
-            {
-              my_GTK.screen_rect.width += (my_GTK.screen_rect.x - (SCREEN_BORDER_WIDTH + screen_dot));
-              my_GTK.screen_rect.x = (SCREEN_BORDER_WIDTH + screen_dot);
-            }
-          else if ((SCREEN_BORDER_WIDTH + screen_dot + 2) > (my_GTK.screen_rect.x + my_GTK.screen_rect.width))
-            {
-              my_GTK.screen_rect.width = (SCREEN_BORDER_WIDTH + screen_dot + 2) - my_GTK.screen_rect.x;
-            }
-
-          if ((SCREEN_BORDER_HEIGHT + screen_row) < my_GTK.screen_rect.y)
-            {
-              my_GTK.screen_rect.height += (my_GTK.screen_rect.y - (SCREEN_BORDER_HEIGHT + screen_row));
-              my_GTK.screen_rect.y = (SCREEN_BORDER_HEIGHT + screen_row);
-            }
-          else if ((SCREEN_BORDER_HEIGHT + screen_row + 2) > (my_GTK.screen_rect.y + my_GTK.screen_rect.height))
-            my_GTK.screen_rect.height = (SCREEN_BORDER_HEIGHT + screen_row + 2) - my_GTK.screen_rect.y;
+          TOUCH_DIRTY_AREA();
         }
 
       *last++ = *bits++;
@@ -1451,6 +1697,7 @@ void text40_mono_rasterizer (int raster_cycles, int raster_idx, int screen_dot, 
   gtk_widget_draw(screen_da, &(my_GTK.screen_rect));
   RESET_SCREEN_RECT();
 #endif
+  ;
 }
 
 /************************************/
@@ -1460,76 +1707,14 @@ void text80_color_rasterizer (int raster_cycles, int raster_idx, int screen_dot,
   unsigned char * bits;
   unsigned char * last;
 
-  /*
-   * look for cases where the beam is over "clean" (unchanged) pixels
-   */
-
-  /* beam is currently left of the "dirty" area */
-  if (screen_dot < text80_left[screen_row / 2])
-    {
-      /* advance to changed dots, and see if all the time is gone */
-      raster_idx += text80_left[screen_row / 2] - screen_dot;
-      if (raster_idx >= raster_cycles) return;
-      screen_dot = text80_left[screen_row / 2];
-    }
-  /* beam is to the right of the "dirty" area */
-  else if (screen_dot >= text80_right[screen_row / 2])
-    {
-      /* advance to end of row and see if all the time is gone */
-      raster_idx += SCREEN_WIDTH - screen_dot;
-      if (raster_idx >= raster_cycles) return;
-      screen_dot = SCREEN_WIDTH;
-    }
-
-  /*
-   * try to mark parts of the current row "clean"
-   */
-
-  /* advance the left side of the "dirty" area, if possible */
-  if (screen_dot == text80_left[screen_row / 2])
-    {
-      text80_left[screen_row / 2] += (raster_cycles - raster_idx);
-
-      /* mark the whole row as "clean" if possible */
-      if (text80_left[screen_row / 2] >= text80_right[screen_row / 2])
-        {
-          text80_right[screen_row / 2] = 0;
-        }
-    }
-  else if (screen_dot < text80_right[screen_row / 2])
-    {
-      /* mark the end of the "dirty" area as now being "clean" */
-      if ((screen_dot + (raster_cycles - raster_idx)) >= text80_right[screen_row / 2])
-        {
-          text80_right[screen_row / 2] = screen_dot;
-        }
-    }
-
-  /*
-   * finally update when necessary
-   */
-
-  /* 80 char * 7 dots * screen_row / SCANLINE_INCR => (280 * screen_row) */
+  RASTER_SETUP(text80_left, text80_right);
 
   last = video_last + (280 * screen_row) + screen_dot;
   bits = text80_bits + (280 * screen_row) + screen_dot;
 
   for ( ; raster_idx < raster_cycles; ++raster_idx)
     {
-      /* beam is now below the screen -- no more work to do */
-      if (screen_row >= SCREEN_HEIGHT) goto rasterize_done;
-
-      /* beam is now to the right of the screen -- check for a wrap */
-      if (screen_dot >= SCREEN_WIDTH)
-        {
-          /* wrap, cross the border and see if all the time is gone */
-          raster_idx += (SCAN_WIDTH - screen_dot);
-          if (raster_idx >= raster_cycles) goto rasterize_done;
-          screen_dot = 0;
-          screen_row += SCANLINE_INCR;
-          /* just in case the beam wrapped off the bottom of the screen */
-          if (screen_row >= SCREEN_HEIGHT) goto rasterize_done;
-        }
+      CHECK_RASTER();
 
       if (*bits != *last)
         {
@@ -1548,23 +1733,7 @@ void text80_color_rasterizer (int raster_cycles, int raster_idx, int screen_dot,
                              SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row + 1);
             }
 
-          if ((SCREEN_BORDER_WIDTH + screen_dot) < my_GTK.screen_rect.x)
-            {
-              my_GTK.screen_rect.width += (my_GTK.screen_rect.x - (SCREEN_BORDER_WIDTH + screen_dot));
-              my_GTK.screen_rect.x = (SCREEN_BORDER_WIDTH + screen_dot);
-            }
-          else if ((SCREEN_BORDER_WIDTH + screen_dot + 1) > (my_GTK.screen_rect.x + my_GTK.screen_rect.width))
-            {
-              my_GTK.screen_rect.width = (SCREEN_BORDER_WIDTH + screen_dot + 1) - my_GTK.screen_rect.x;
-            }
-
-          if ((SCREEN_BORDER_HEIGHT + screen_row) < my_GTK.screen_rect.y)
-            {
-              my_GTK.screen_rect.height += (my_GTK.screen_rect.y - (SCREEN_BORDER_HEIGHT + screen_row));
-              my_GTK.screen_rect.y = (SCREEN_BORDER_HEIGHT + screen_row);
-            }
-          else if ((SCREEN_BORDER_HEIGHT + screen_row + 2) > (my_GTK.screen_rect.y + my_GTK.screen_rect.height))
-            my_GTK.screen_rect.height = (SCREEN_BORDER_HEIGHT + screen_row + 2) - my_GTK.screen_rect.y;
+          TOUCH_DIRTY_AREA();
         }
 
       *last++ = *bits++;
@@ -1576,6 +1745,64 @@ void text80_color_rasterizer (int raster_cycles, int raster_idx, int screen_dot,
   gtk_widget_draw(screen_da, &(my_GTK.screen_rect));
   RESET_SCREEN_RECT();
 #endif
+  ;
+}
+
+/************************************/
+
+void text80_color_dga_rasterizer (int raster_cycles,
+                                  int raster_idx,
+                                  int screen_dot,
+                                  int screen_row)
+{
+  unsigned char * bits;
+  unsigned char * last;
+  char * xdga_line1;
+  char * xdga_line2;
+
+  RASTER_SETUP(text80_left, text80_right);
+
+  last = video_last + (280 * screen_row) + screen_dot;
+  bits = text80_bits + (280 * screen_row) + screen_dot;
+
+  xdga_line1  = xdga.base;
+  xdga_line1 += (xdga.bytes_per_line * (SCREEN_BORDER_HEIGHT + screen_row));
+  xdga_line1 += (xdga.bytes_per_pixel * (SCREEN_BORDER_WIDTH + screen_dot));
+  xdga_line2  = xdga_line1 + xdga.bytes_per_line;
+
+  for ( ; raster_idx < raster_cycles; ++raster_idx)
+    {
+      CHECK_RASTER_DGA();
+
+      if (*bits != *last)
+        {
+          if (xdga.bytes_per_pixel == 1)
+            {
+              char pixel = (*bits & 1) ? 15 : 0;
+              *xdga_line1 = pixel;
+              *xdga_line2 = pixel;
+            }
+          else if (xdga.bytes_per_pixel == 2)
+            {
+              short pixel = (*bits & 1) ? 0x7FFF : 0;
+              *(short *)xdga_line1 = pixel;
+              *(short *)xdga_line2 = pixel;
+            }
+          else
+            {
+              long pixel = (*bits & 1) ? 0xFFFFFF : 0;
+              *(long *)xdga_line1 = pixel;
+              *(long *)xdga_line2 = pixel;
+            }
+        }
+
+      *last++ = *bits++;
+      ++screen_dot;
+      xdga_line1 += xdga.bytes_per_pixel;
+      xdga_line2 += xdga.bytes_per_pixel;
+    }
+ rasterize_done:
+  ;
 }
 
 /************************************/
@@ -1585,76 +1812,14 @@ void text80_mono_rasterizer (int raster_cycles, int raster_idx, int screen_dot, 
   unsigned char * bits;
   unsigned char * last;
 
-  /*
-   * look for cases where the beam is over "clean" (unchanged) pixels
-   */
-
-  /* beam is currently left of the "dirty" area */
-  if (screen_dot < text80_left[screen_row / 2])
-    {
-      /* advance to changed dots, and see if all the time is gone */
-      raster_idx += text80_left[screen_row / 2] - screen_dot;
-      if (raster_idx >= raster_cycles) return;
-      screen_dot = text80_left[screen_row / 2];
-    }
-  /* beam is to the right of the "dirty" area */
-  else if (screen_dot >= text80_right[screen_row / 2])
-    {
-      /* advance to end of row and see if all the time is gone */
-      raster_idx += SCREEN_WIDTH - screen_dot;
-      if (raster_idx >= raster_cycles) return;
-      screen_dot = SCREEN_WIDTH;
-    }
-
-  /*
-   * try to mark parts of the current row "clean"
-   */
-
-  /* advance the left side of the "dirty" area, if possible */
-  if (screen_dot == text80_left[screen_row / 2])
-    {
-      text80_left[screen_row / 2] += (raster_cycles - raster_idx);
-
-      /* mark the whole row as "clean" if possible */
-      if (text80_left[screen_row / 2] >= text80_right[screen_row / 2])
-        {
-          text80_right[screen_row / 2] = 0;
-        }
-    }
-  else if (screen_dot < text80_right[screen_row / 2])
-    {
-      /* mark the end of the "dirty" area as now being "clean" */
-      if ((screen_dot + (raster_cycles - raster_idx)) >= text80_right[screen_row / 2])
-        {
-          text80_right[screen_row / 2] = screen_dot;
-        }
-    }
-
-  /*
-   * finally update when necessary
-   */
-
-  /* 80 char * 7 dots * screen_row / SCANLINE_INCR => (280 * screen_row) */
+  RASTER_SETUP(text80_left, text80_right);
 
   last = video_last + (280 * screen_row) + screen_dot;
   bits = text80_bits + (280 * screen_row) + screen_dot;
 
   for ( ; raster_idx < raster_cycles; ++raster_idx)
     {
-      /* beam is now below the screen -- no more work to do */
-      if (screen_row >= SCREEN_HEIGHT) goto rasterize_done;
-
-      /* beam is now to the right of the screen -- check for a wrap */
-      if (screen_dot >= SCREEN_WIDTH)
-        {
-          /* wrap, cross the border and see if all the time is gone */
-          raster_idx += (SCAN_WIDTH - screen_dot);
-          if (raster_idx >= raster_cycles) goto rasterize_done;
-          screen_dot = 0;
-          screen_row += SCANLINE_INCR;
-          /* just in case the beam wrapped off the bottom of the screen */
-          if (screen_row >= SCREEN_HEIGHT) goto rasterize_done;
-        }
+      CHECK_RASTER();
 
       if (*bits != *last)
         {
@@ -1673,23 +1838,7 @@ void text80_mono_rasterizer (int raster_cycles, int raster_idx, int screen_dot, 
                              SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row + 1);
             }
 
-          if ((SCREEN_BORDER_WIDTH + screen_dot) < my_GTK.screen_rect.x)
-            {
-              my_GTK.screen_rect.width += (my_GTK.screen_rect.x - (SCREEN_BORDER_WIDTH + screen_dot));
-              my_GTK.screen_rect.x = (SCREEN_BORDER_WIDTH + screen_dot);
-            }
-          else if ((SCREEN_BORDER_WIDTH + screen_dot + 1) > (my_GTK.screen_rect.x + my_GTK.screen_rect.width))
-            {
-              my_GTK.screen_rect.width = (SCREEN_BORDER_WIDTH + screen_dot + 1) - my_GTK.screen_rect.x;
-            }
-
-          if ((SCREEN_BORDER_HEIGHT + screen_row) < my_GTK.screen_rect.y)
-            {
-              my_GTK.screen_rect.height += (my_GTK.screen_rect.y - (SCREEN_BORDER_HEIGHT + screen_row));
-              my_GTK.screen_rect.y = (SCREEN_BORDER_HEIGHT + screen_row);
-            }
-          else if ((SCREEN_BORDER_HEIGHT + screen_row + 2) > (my_GTK.screen_rect.y + my_GTK.screen_rect.height))
-            my_GTK.screen_rect.height = (SCREEN_BORDER_HEIGHT + screen_row + 2) - my_GTK.screen_rect.y;
+          TOUCH_DIRTY_AREA();
         }
 
       *last++ = *bits++;
@@ -1701,6 +1850,7 @@ void text80_mono_rasterizer (int raster_cycles, int raster_idx, int screen_dot, 
   gtk_widget_draw(screen_da, &(my_GTK.screen_rect));
   RESET_SCREEN_RECT();
 #endif
+  ;
 }
 
 /************************************/
@@ -1710,76 +1860,14 @@ void gr_color_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int
   unsigned char * bits;
   unsigned char * last;
 
-  /*
-   * look for cases where the beam is over "clean" (unchanged) pixels
-   */
-
-  /* beam is currently left of the "dirty" area */
-  if (screen_dot < gr_left[screen_row / 2])
-    {
-      /* advance to changed dots, and see if all the time is gone */
-      raster_idx += gr_left[screen_row / 2] - screen_dot;
-      if (raster_idx >= raster_cycles) return;
-      screen_dot = gr_left[screen_row / 2];
-    }
-  /* beam is to the right of the "dirty" area */
-  else if (screen_dot >= gr_right[screen_row / 2])
-    {
-      /* advance to end of row and see if all the time is gone */
-      raster_idx += SCREEN_WIDTH - screen_dot;
-      if (raster_idx >= raster_cycles) return;
-      screen_dot = SCREEN_WIDTH;
-    }
-
-  /*
-   * try to mark parts of the current row "clean"
-   */
-
-  /* advance the left side of the "dirty" area, if possible */
-  if (screen_dot == gr_left[screen_row / 2])
-    {
-      gr_left[screen_row / 2] += (raster_cycles - raster_idx);
-
-      /* mark the whole row as "clean" if possible */
-      if (gr_left[screen_row / 2] >= gr_right[screen_row / 2])
-        {
-          gr_right[screen_row / 2] = 0;
-        }
-    }
-  else if (screen_dot < gr_right[screen_row / 2])
-    {
-      /* mark the end of the "dirty" area as now being "clean" */
-      if ((screen_dot + (raster_cycles - raster_idx)) >= gr_right[screen_row / 2])
-        {
-          gr_right[screen_row / 2] = screen_dot;
-        }
-    }
-
-  /*
-   * finally update when necessary
-   */
-
-  /* 80 char * 7 dots * screen_row / SCANLINE_INCR => (280 * screen_row) */
+  RASTER_SETUP(gr_left, gr_right);
 
   last = video_last + (280 * screen_row) + screen_dot;
   bits = gr_bits + (280 * screen_row) + screen_dot;
 
   for ( ; raster_idx < raster_cycles; ++raster_idx)
     {
-      /* beam is now below the screen -- no more work to do */
-      if (screen_row >= SCREEN_HEIGHT) goto rasterize_done;
-
-      /* beam is now to the right of the screen -- check for a wrap */
-      if (screen_dot >= SCREEN_WIDTH)
-        {
-          /* wrap, cross the border and see if all the time is gone */
-          raster_idx += (SCAN_WIDTH - screen_dot);
-          if (raster_idx >= raster_cycles) goto rasterize_done;
-          screen_dot = 0;
-          screen_row += SCANLINE_INCR;
-          /* just in case the beam wrapped off the bottom of the screen */
-          if (screen_row >= SCREEN_HEIGHT) goto rasterize_done;
-        }
+      CHECK_RASTER();
 
       if (*bits != *last)
         {
@@ -1788,23 +1876,7 @@ void gr_color_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int
           gdk_draw_point(my_GTK.apple_pixmap, color_line2_gc[(*bits >> 4) & 0xF],
                          SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row + 1);
 
-          if ((SCREEN_BORDER_WIDTH + screen_dot) < my_GTK.screen_rect.x)
-            {
-              my_GTK.screen_rect.width += (my_GTK.screen_rect.x - (SCREEN_BORDER_WIDTH + screen_dot));
-              my_GTK.screen_rect.x = (SCREEN_BORDER_WIDTH + screen_dot);
-            }
-          else if ((SCREEN_BORDER_WIDTH + screen_dot + 1) > (my_GTK.screen_rect.x + my_GTK.screen_rect.width))
-            {
-              my_GTK.screen_rect.width = (SCREEN_BORDER_WIDTH + screen_dot + 1) - my_GTK.screen_rect.x;
-            }
-
-          if ((SCREEN_BORDER_HEIGHT + screen_row) < my_GTK.screen_rect.y)
-            {
-              my_GTK.screen_rect.height += (my_GTK.screen_rect.y - (SCREEN_BORDER_HEIGHT + screen_row));
-              my_GTK.screen_rect.y = (SCREEN_BORDER_HEIGHT + screen_row);
-            }
-          else if ((SCREEN_BORDER_HEIGHT + screen_row + 2) > (my_GTK.screen_rect.y + my_GTK.screen_rect.height))
-            my_GTK.screen_rect.height = (SCREEN_BORDER_HEIGHT + screen_row + 2) - my_GTK.screen_rect.y;
+          TOUCH_DIRTY_AREA();
         }
 
       *last++ = *bits++;
@@ -1816,6 +1888,112 @@ void gr_color_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int
   gtk_widget_draw(screen_da, &(my_GTK.screen_rect));
   RESET_SCREEN_RECT();
 #endif
+  ;
+}
+
+/************************************/
+
+void gr_color_dga_rasterizer (int raster_cycles,
+                              int raster_idx,
+                              int screen_dot,
+                              int screen_row)
+{
+  unsigned char * bits;
+  unsigned char * last;
+  char * xdga_line1;
+  char * xdga_line2;
+
+  RASTER_SETUP(gr_left, gr_right);
+
+  last = video_last + (280 * screen_row) + screen_dot;
+  bits = gr_bits + (280 * screen_row) + screen_dot;
+
+  xdga_line1  = xdga.base;
+  xdga_line1 += (xdga.bytes_per_line * (SCREEN_BORDER_HEIGHT + screen_row));
+  xdga_line1 += (xdga.bytes_per_pixel * (SCREEN_BORDER_WIDTH + screen_dot));
+  xdga_line2  = xdga_line1 + xdga.bytes_per_line;
+
+  for ( ; raster_idx < raster_cycles; ++raster_idx)
+    {
+      CHECK_RASTER_DGA();
+
+      if (*bits != *last)
+        {
+          if (xdga.bytes_per_pixel == 1)
+            {
+              char pixel = (*bits >> 4) & 0xf;
+              *xdga_line1 = pixel;
+              *xdga_line2 = pixel;
+            }
+          else if (xdga.bytes_per_pixel == 2)
+            {
+              short pixel = xdga.pixel[(*bits >> 4) & 0xf].halfword[HALFWORD_IDX];
+              *(short *)xdga_line1 = pixel;
+              *(short *)xdga_line2 = pixel;
+            }
+          else
+            {
+              long pixel = xdga.pixel[(*bits >> 4) & 0xf].word;
+              *(long *)xdga_line1 = pixel;
+              *(long *)xdga_line2 = pixel;
+            }
+        }
+
+      *last++ = *bits++;
+      ++screen_dot;
+      xdga_line1 += xdga.bytes_per_pixel;
+      xdga_line2 += xdga.bytes_per_pixel;
+    }
+ rasterize_done:
+  ;
+}
+
+/************************************/
+
+void gr_mono_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row)
+{
+  unsigned char * bits;
+  unsigned char * last;
+
+  RASTER_SETUP(gr_left, gr_right);
+
+  last = video_last + (280 * screen_row) + screen_dot;
+  bits = gr_bits + (280 * screen_row) + screen_dot;
+
+  for ( ; raster_idx < raster_cycles; ++raster_idx)
+    {
+      CHECK_RASTER();
+
+      if (*bits != *last)
+        {
+          if (*bits & 1)
+            {
+              gdk_draw_point(my_GTK.apple_pixmap, mono_line1_gc,
+                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row);
+              gdk_draw_point(my_GTK.apple_pixmap, mono_line2_gc,
+                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row + 1);
+            }
+          else
+            {
+              gdk_draw_point(my_GTK.apple_pixmap, screen_da->style->black_gc,
+                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row);
+              gdk_draw_point(my_GTK.apple_pixmap, screen_da->style->black_gc,
+                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row + 1);
+            }
+
+          TOUCH_DIRTY_AREA();
+        }
+
+      *last++ = *bits++;
+      ++screen_dot;
+    }
+
+ rasterize_done:
+#if UPDATE_HERE
+  gtk_widget_draw(screen_da, &(my_GTK.screen_rect));
+  RESET_SCREEN_RECT();
+#endif
+  ;
 }
 
 /************************************/
@@ -1856,127 +2034,38 @@ void gr_color_mixed80_rasterizer (int raster_cycles, int raster_idx, int screen_
 
 /************************************/
 
-void gr_mono_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row)
+void gr_color_mixed40_dga_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row)
 {
-  unsigned char * bits;
-  unsigned char * last;
-
   /*
-   * look for cases where the beam is over "clean" (unchanged) pixels
+   * theoretically there could be an error here if, for example, screen_row == 319 and so
+   * gr_rasterizer() is called, but then in that function the beam wraps to the next line and
+   * draws something. Then we might get a small segment of GR in the first line of the text
+   * area. This is only possible, however, when raster_cycles is quite large. I'm not sure
+   * that it is ever so large.
    */
 
-  /* beam is currently left of the "dirty" area */
-  if (screen_dot < gr_left[screen_row / 2])
-    {
-      /* advance to changed dots, and see if all the time is gone */
-      raster_idx += gr_left[screen_row / 2] - screen_dot;
-      if (raster_idx >= raster_cycles) return;
-      screen_dot = gr_left[screen_row / 2];
-    }
-  /* beam is to the right of the "dirty" area */
-  else if (screen_dot >= gr_right[screen_row / 2])
-    {
-      /* advance to end of row and see if all the time is gone */
-      raster_idx += SCREEN_WIDTH - screen_dot;
-      if (raster_idx >= raster_cycles) return;
-      screen_dot = SCREEN_WIDTH;
-    }
+  if (screen_row < 320) 
+    gr_color_dga_rasterizer(raster_cycles, raster_idx, screen_dot, screen_row);
+  else
+    text40_color_dga_rasterizer(raster_cycles, raster_idx, screen_dot, screen_row);
+}
 
+/************************************/
+
+void gr_color_mixed80_dga_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row)
+{
   /*
-   * try to mark parts of the current row "clean"
+   * theoretically there could be an error here if, for example, screen_row == 319 and so
+   * gr_rasterizer() is called, but then in that function the beam wraps to the next line and
+   * draws something. Then we might get a small segment of GR in the first line of the text
+   * area. This is only possible, however, when raster_cycles is quite large. I'm not sure
+   * that it is ever so large.
    */
 
-  /* advance the left side of the "dirty" area, if possible */
-  if (screen_dot == gr_left[screen_row / 2])
-    {
-      gr_left[screen_row / 2] += (raster_cycles - raster_idx);
-
-      /* mark the whole row as "clean" if possible */
-      if (gr_left[screen_row / 2] >= gr_right[screen_row / 2])
-        {
-          gr_right[screen_row / 2] = 0;
-        }
-    }
-  else if (screen_dot < gr_right[screen_row / 2])
-    {
-      /* mark the end of the "dirty" area as now being "clean" */
-      if ((screen_dot + (raster_cycles - raster_idx)) >= gr_right[screen_row / 2])
-        {
-          gr_right[screen_row / 2] = screen_dot;
-        }
-    }
-
-  /*
-   * finally update when necessary
-   */
-
-  /* 80 char * 7 dots * screen_row / SCANLINE_INCR => (280 * screen_row) */
-
-  last = video_last + (280 * screen_row) + screen_dot;
-  bits = gr_bits + (280 * screen_row) + screen_dot;
-
-  for ( ; raster_idx < raster_cycles; ++raster_idx)
-    {
-      /* beam is now below the screen -- no more work to do */
-      if (screen_row >= SCREEN_HEIGHT) goto rasterize_done;
-
-      /* beam is now to the right of the screen -- check for a wrap */
-      if (screen_dot >= SCREEN_WIDTH)
-        {
-          /* wrap, cross the border and see if all the time is gone */
-          raster_idx += (SCAN_WIDTH - screen_dot);
-          if (raster_idx >= raster_cycles) goto rasterize_done;
-          screen_dot = 0;
-          screen_row += SCANLINE_INCR;
-          /* just in case the beam wrapped off the bottom of the screen */
-          if (screen_row >= SCREEN_HEIGHT) goto rasterize_done;
-        }
-
-      if (*bits != *last)
-        {
-          if (*bits & 1)
-            {
-              gdk_draw_point(my_GTK.apple_pixmap, mono_line1_gc,
-                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row);
-              gdk_draw_point(my_GTK.apple_pixmap, mono_line2_gc,
-                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row + 1);
-            }
-          else
-            {
-              gdk_draw_point(my_GTK.apple_pixmap, screen_da->style->black_gc,
-                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row);
-              gdk_draw_point(my_GTK.apple_pixmap, screen_da->style->black_gc,
-                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row + 1);
-            }
-
-          if ((SCREEN_BORDER_WIDTH + screen_dot) < my_GTK.screen_rect.x)
-            {
-              my_GTK.screen_rect.width += (my_GTK.screen_rect.x - (SCREEN_BORDER_WIDTH + screen_dot));
-              my_GTK.screen_rect.x = (SCREEN_BORDER_WIDTH + screen_dot);
-            }
-          else if ((SCREEN_BORDER_WIDTH + screen_dot + 1) > (my_GTK.screen_rect.x + my_GTK.screen_rect.width))
-            {
-              my_GTK.screen_rect.width = (SCREEN_BORDER_WIDTH + screen_dot + 1) - my_GTK.screen_rect.x;
-            }
-
-          if ((SCREEN_BORDER_HEIGHT + screen_row) < my_GTK.screen_rect.y)
-            {
-              my_GTK.screen_rect.height += (my_GTK.screen_rect.y - (SCREEN_BORDER_HEIGHT + screen_row));
-              my_GTK.screen_rect.y = (SCREEN_BORDER_HEIGHT + screen_row);
-            }
-          else if ((SCREEN_BORDER_HEIGHT + screen_row + 2) > (my_GTK.screen_rect.y + my_GTK.screen_rect.height))
-            my_GTK.screen_rect.height = (SCREEN_BORDER_HEIGHT + screen_row + 2) - my_GTK.screen_rect.y;
-        }
-
-      *last++ = *bits++;
-      ++screen_dot;
-    }
-
- rasterize_done:
-#if UPDATE_HERE
-  gtk_widget_draw(screen_da, &(my_GTK.screen_rect));
-  RESET_SCREEN_RECT();
-#endif
+  if (screen_row < 320) 
+    gr_color_dga_rasterizer(raster_cycles, raster_idx, screen_dot, screen_row);
+  else
+    text80_color_dga_rasterizer(raster_cycles, raster_idx, screen_dot, screen_row);
 }
 
 /************************************/
@@ -2022,76 +2111,14 @@ void dgr_color_rasterizer (int raster_cycles, int raster_idx, int screen_dot, in
   unsigned char * bits;
   unsigned char * last;
 
-  /*
-   * look for cases where the beam is over "clean" (unchanged) pixels
-   */
-
-  /* beam is currently left of the "dirty" area */
-  if (screen_dot < dgr_left[screen_row / 2])
-    {
-      /* advance to changed dots, and see if all the time is gone */
-      raster_idx += dgr_left[screen_row / 2] - screen_dot;
-      if (raster_idx >= raster_cycles) return;
-      screen_dot = dgr_left[screen_row / 2];
-    }
-  /* beam is to the right of the "dirty" area */
-  else if (screen_dot >= dgr_right[screen_row / 2])
-    {
-      /* advance to end of row and see if all the time is gone */
-      raster_idx += SCREEN_WIDTH - screen_dot;
-      if (raster_idx >= raster_cycles) return;
-      screen_dot = SCREEN_WIDTH;
-    }
-
-  /*
-   * try to mark parts of the current row "clean"
-   */
-
-  /* advance the left side of the "dirty" area, if possible */
-  if (screen_dot == dgr_left[screen_row / 2])
-    {
-      dgr_left[screen_row / 2] += (raster_cycles - raster_idx);
-
-      /* mark the whole row as "clean" if possible */
-      if (dgr_left[screen_row / 2] >= dgr_right[screen_row / 2])
-        {
-          dgr_right[screen_row / 2] = 0;
-        }
-    }
-  else if (screen_dot < dgr_right[screen_row / 2])
-    {
-      /* mark the end of the "dirty" area as now being "clean" */
-      if ((screen_dot + (raster_cycles - raster_idx)) >= dgr_right[screen_row / 2])
-        {
-          dgr_right[screen_row / 2] = screen_dot;
-        }
-    }
-
-  /*
-   * finally update when necessary
-   */
-
-  /* 80 char * 7 dots * screen_row / SCANLINE_INCR => (280 * screen_row) */
+  RASTER_SETUP(dgr_left, dgr_right);
 
   last = video_last + (280 * screen_row) + screen_dot;
   bits = dgr_bits + (280 * screen_row) + screen_dot;
 
   for ( ; raster_idx < raster_cycles; ++raster_idx)
     {
-      /* beam is now below the screen -- no more work to do */
-      if (screen_row >= SCREEN_HEIGHT) goto rasterize_done;
-
-      /* beam is now to the right of the screen -- check for a wrap */
-      if (screen_dot >= SCREEN_WIDTH)
-        {
-          /* wrap, cross the border and see if all the time is gone */
-          raster_idx += (SCAN_WIDTH - screen_dot);
-          if (raster_idx >= raster_cycles) goto rasterize_done;
-          screen_dot = 0;
-          screen_row += SCANLINE_INCR;
-          /* just in case the beam wrapped off the bottom of the screen */
-          if (screen_row >= SCREEN_HEIGHT) goto rasterize_done;
-        }
+      CHECK_RASTER();
 
       if (*bits != *last)
         {
@@ -2100,23 +2127,7 @@ void dgr_color_rasterizer (int raster_cycles, int raster_idx, int screen_dot, in
           gdk_draw_point(my_GTK.apple_pixmap, color_line2_gc[(*bits >> 4) & 0xF],
                          SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row + 1);
 
-          if ((SCREEN_BORDER_WIDTH + screen_dot) < my_GTK.screen_rect.x)
-            {
-              my_GTK.screen_rect.width += (my_GTK.screen_rect.x - (SCREEN_BORDER_WIDTH + screen_dot));
-              my_GTK.screen_rect.x = (SCREEN_BORDER_WIDTH + screen_dot);
-            }
-          else if ((SCREEN_BORDER_WIDTH + screen_dot + 1) > (my_GTK.screen_rect.x + my_GTK.screen_rect.width))
-            {
-              my_GTK.screen_rect.width = (SCREEN_BORDER_WIDTH + screen_dot + 1) - my_GTK.screen_rect.x;
-            }
-
-          if ((SCREEN_BORDER_HEIGHT + screen_row) < my_GTK.screen_rect.y)
-            {
-              my_GTK.screen_rect.height += (my_GTK.screen_rect.y - (SCREEN_BORDER_HEIGHT + screen_row));
-              my_GTK.screen_rect.y = (SCREEN_BORDER_HEIGHT + screen_row);
-            }
-          else if ((SCREEN_BORDER_HEIGHT + screen_row + 2) > (my_GTK.screen_rect.y + my_GTK.screen_rect.height))
-            my_GTK.screen_rect.height = (SCREEN_BORDER_HEIGHT + screen_row + 2) - my_GTK.screen_rect.y;
+          TOUCH_DIRTY_AREA();
         }
 
       *last++ = *bits++;
@@ -2128,6 +2139,109 @@ void dgr_color_rasterizer (int raster_cycles, int raster_idx, int screen_dot, in
   gtk_widget_draw(screen_da, &(my_GTK.screen_rect));
   RESET_SCREEN_RECT();
 #endif
+  ;
+}
+
+/************************************/
+
+void dgr_color_dga_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row)
+{
+  unsigned char * bits;
+  unsigned char * last;
+  char * xdga_line1;
+  char * xdga_line2;
+
+  RASTER_SETUP(dgr_left, dgr_right);
+
+  last = video_last + (280 * screen_row) + screen_dot;
+  bits = dgr_bits + (280 * screen_row) + screen_dot;
+
+  xdga_line1  = xdga.base;
+  xdga_line1 += (xdga.bytes_per_line * (SCREEN_BORDER_HEIGHT + screen_row));
+  xdga_line1 += (xdga.bytes_per_pixel * (SCREEN_BORDER_WIDTH + screen_dot));
+  xdga_line2  = xdga_line1 + xdga.bytes_per_line;
+
+  for ( ; raster_idx < raster_cycles; ++raster_idx)
+    {
+      CHECK_RASTER_DGA();
+
+      if (*bits != *last)
+        {
+          if (xdga.bytes_per_pixel == 1)
+            {
+              char pixel = (*bits >> 4) & 0xf;
+              *xdga_line1 = pixel;
+              *xdga_line2 = pixel;
+            }
+          else if (xdga.bytes_per_pixel == 2)
+            {
+              short pixel = xdga.pixel[(*bits >> 4) & 0xf].halfword[HALFWORD_IDX];
+              *(short *)xdga_line1 = pixel;
+              *(short *)xdga_line2 = pixel;
+            }
+          else
+            {
+              long pixel = xdga.pixel[(*bits >> 4) & 0xf].word;
+              *(long *)xdga_line1 = pixel;
+              *(long *)xdga_line2 = pixel;
+            }
+        }
+
+      *last++ = *bits++;
+      ++screen_dot;
+      xdga_line1 += xdga.bytes_per_pixel;
+      xdga_line2 += xdga.bytes_per_pixel;
+    }
+ rasterize_done:
+  ;
+}
+
+/************************************/
+
+void dgr_mono_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row)
+{
+  unsigned char * bits;
+  unsigned char * last;
+
+  RASTER_SETUP(dgr_left, dgr_right);
+
+  last = video_last + (280 * screen_row) + screen_dot;
+  bits = dgr_bits + (280 * screen_row) + screen_dot;
+
+  for ( ; raster_idx < raster_cycles; ++raster_idx)
+    {
+      CHECK_RASTER();
+
+      if (*bits != *last)
+        {
+          if (*bits & 1)
+            {
+              gdk_draw_point(my_GTK.apple_pixmap, mono_line1_gc,
+                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row);
+              gdk_draw_point(my_GTK.apple_pixmap, mono_line2_gc,
+                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row + 1);
+            }
+          else
+            {
+              gdk_draw_point(my_GTK.apple_pixmap, screen_da->style->black_gc,
+                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row);
+              gdk_draw_point(my_GTK.apple_pixmap, screen_da->style->black_gc,
+                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row + 1);
+            }
+
+          TOUCH_DIRTY_AREA();
+        }
+
+      *last++ = *bits++;
+      ++screen_dot;
+    }
+
+ rasterize_done:
+#if UPDATE_HERE
+  gtk_widget_draw(screen_da, &(my_GTK.screen_rect));
+  RESET_SCREEN_RECT();
+#endif
+  ;
 }
 
 /************************************/
@@ -2150,127 +2264,20 @@ void dgr_color_mixed_rasterizer (int raster_cycles, int raster_idx, int screen_d
 
 /************************************/
 
-void dgr_mono_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row)
+void dgr_color_mixed_dga_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row)
 {
-  unsigned char * bits;
-  unsigned char * last;
-
   /*
-   * look for cases where the beam is over "clean" (unchanged) pixels
+   * theoretically there could be an error here if, for example, screen_row == 319 and so
+   * dgr_rasterizer() is called, but then in that function the beam wraps to the next line and
+   * draws something. Then we might get a small segment of DGR in the first line of the text
+   * area. This is only possible, however, when raster_cycles is quite large. I'm not sure
+   * that it is ever so large.
    */
 
-  /* beam is currently left of the "dirty" area */
-  if (screen_dot < dgr_left[screen_row / 2])
-    {
-      /* advance to changed dots, and see if all the time is gone */
-      raster_idx += dgr_left[screen_row / 2] - screen_dot;
-      if (raster_idx >= raster_cycles) return;
-      screen_dot = dgr_left[screen_row / 2];
-    }
-  /* beam is to the right of the "dirty" area */
-  else if (screen_dot >= dgr_right[screen_row / 2])
-    {
-      /* advance to end of row and see if all the time is gone */
-      raster_idx += SCREEN_WIDTH - screen_dot;
-      if (raster_idx >= raster_cycles) return;
-      screen_dot = SCREEN_WIDTH;
-    }
-
-  /*
-   * try to mark parts of the current row "clean"
-   */
-
-  /* advance the left side of the "dirty" area, if possible */
-  if (screen_dot == dgr_left[screen_row / 2])
-    {
-      dgr_left[screen_row / 2] += (raster_cycles - raster_idx);
-
-      /* mark the whole row as "clean" if possible */
-      if (dgr_left[screen_row / 2] >= dgr_right[screen_row / 2])
-        {
-          dgr_right[screen_row / 2] = 0;
-        }
-    }
-  else if (screen_dot < dgr_right[screen_row / 2])
-    {
-      /* mark the end of the "dirty" area as now being "clean" */
-      if ((screen_dot + (raster_cycles - raster_idx)) >= dgr_right[screen_row / 2])
-        {
-          dgr_right[screen_row / 2] = screen_dot;
-        }
-    }
-
-  /*
-   * finally update when necessary
-   */
-
-  /* 80 char * 7 dots * screen_row / SCANLINE_INCR => (280 * screen_row) */
-
-  last = video_last + (280 * screen_row) + screen_dot;
-  bits = dgr_bits + (280 * screen_row) + screen_dot;
-
-  for ( ; raster_idx < raster_cycles; ++raster_idx)
-    {
-      /* beam is now below the screen -- no more work to do */
-      if (screen_row >= SCREEN_HEIGHT) goto rasterize_done;
-
-      /* beam is now to the right of the screen -- check for a wrap */
-      if (screen_dot >= SCREEN_WIDTH)
-        {
-          /* wrap, cross the border and see if all the time is gone */
-          raster_idx += (SCAN_WIDTH - screen_dot);
-          if (raster_idx >= raster_cycles) goto rasterize_done;
-          screen_dot = 0;
-          screen_row += SCANLINE_INCR;
-          /* just in case the beam wrapped off the bottom of the screen */
-          if (screen_row >= SCREEN_HEIGHT) goto rasterize_done;
-        }
-
-      if (*bits != *last)
-        {
-          if (*bits & 1)
-            {
-              gdk_draw_point(my_GTK.apple_pixmap, mono_line1_gc,
-                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row);
-              gdk_draw_point(my_GTK.apple_pixmap, mono_line2_gc,
-                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row + 1);
-            }
-          else
-            {
-              gdk_draw_point(my_GTK.apple_pixmap, screen_da->style->black_gc,
-                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row);
-              gdk_draw_point(my_GTK.apple_pixmap, screen_da->style->black_gc,
-                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row + 1);
-            }
-
-          if ((SCREEN_BORDER_WIDTH + screen_dot) < my_GTK.screen_rect.x)
-            {
-              my_GTK.screen_rect.width += (my_GTK.screen_rect.x - (SCREEN_BORDER_WIDTH + screen_dot));
-              my_GTK.screen_rect.x = (SCREEN_BORDER_WIDTH + screen_dot);
-            }
-          else if ((SCREEN_BORDER_WIDTH + screen_dot + 1) > (my_GTK.screen_rect.x + my_GTK.screen_rect.width))
-            {
-              my_GTK.screen_rect.width = (SCREEN_BORDER_WIDTH + screen_dot + 1) - my_GTK.screen_rect.x;
-            }
-
-          if ((SCREEN_BORDER_HEIGHT + screen_row) < my_GTK.screen_rect.y)
-            {
-              my_GTK.screen_rect.height += (my_GTK.screen_rect.y - (SCREEN_BORDER_HEIGHT + screen_row));
-              my_GTK.screen_rect.y = (SCREEN_BORDER_HEIGHT + screen_row);
-            }
-          else if ((SCREEN_BORDER_HEIGHT + screen_row + 2) > (my_GTK.screen_rect.y + my_GTK.screen_rect.height))
-            my_GTK.screen_rect.height = (SCREEN_BORDER_HEIGHT + screen_row + 2) - my_GTK.screen_rect.y;
-        }
-
-      *last++ = *bits++;
-      ++screen_dot;
-    }
-
- rasterize_done:
-#if UPDATE_HERE
-  gtk_widget_draw(screen_da, &(my_GTK.screen_rect));
-  RESET_SCREEN_RECT();
-#endif
+  if (screen_row < 320) 
+    dgr_color_dga_rasterizer(raster_cycles, raster_idx, screen_dot, screen_row);
+  else
+    text80_color_dga_rasterizer(raster_cycles, raster_idx, screen_dot, screen_row);
 }
 
 /************************************/
@@ -2293,222 +2300,12 @@ void dgr_mono_mixed_rasterizer (int raster_cycles, int raster_idx, int screen_do
 
 /************************************/
 
-void hgr_mono_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row)
-{
-  unsigned char * bits;
-  unsigned char * last;
-
-  /*
-   * look for cases where the beam is over "clean" (unchanged) pixels
-   */
-
-  /* beam is currently left of the "dirty" area */
-  if (screen_dot < hgr_left[screen_row / 2])
-    {
-      /* advance to changed dots, and see if all the time is gone */
-      raster_idx += hgr_left[screen_row / 2] - screen_dot;
-      if (raster_idx >= raster_cycles) return;
-      screen_dot = hgr_left[screen_row / 2];
-    }
-  /* beam is to the right of the "dirty" area */
-  else if (screen_dot >= hgr_right[screen_row / 2])
-    {
-      /* advance to end of row and see if all the time is gone */
-      raster_idx += SCREEN_WIDTH - screen_dot;
-      if (raster_idx >= raster_cycles) return;
-      screen_dot = SCREEN_WIDTH;
-    }
-
-  /*
-   * try to mark parts of the current row "clean"
-   */
-
-  /* advance the left side of the "dirty" area, if possible */
-  if (screen_dot == hgr_left[screen_row / 2])
-    {
-      hgr_left[screen_row / 2] += (raster_cycles - raster_idx);
-
-      /* mark the whole row as "clean" if possible */
-      if (hgr_left[screen_row / 2] >= hgr_right[screen_row / 2])
-        {
-          hgr_right[screen_row / 2] = 0;
-        }
-    }
-  else if (screen_dot < hgr_right[screen_row / 2])
-    {
-      /* mark the end of the "dirty" area as now being "clean" */
-      if ((screen_dot + (raster_cycles - raster_idx)) >= hgr_right[screen_row / 2])
-        {
-          hgr_right[screen_row / 2] = screen_dot;
-        }
-    }
-
-  /*
-   * finally update when necessary
-   */
-
-  /* 80 char * 7 dots * screen_row / SCANLINE_INCR => (280 * screen_row) */
-
-  last = video_last + (280 * screen_row) + screen_dot;
-  bits = hgr_bits + (280 * screen_row) + screen_dot;
-
-  for ( ; raster_idx < raster_cycles; ++raster_idx)
-    {
-      /* beam is now below the screen -- no more work to do */
-      if (screen_row >= SCREEN_HEIGHT) goto rasterize_done;
-
-      /* beam is now to the right of the screen -- check for a wrap */
-      if (screen_dot >= SCREEN_WIDTH)
-        {
-          /* wrap, cross the border and see if all the time is gone */
-          raster_idx += (SCAN_WIDTH - screen_dot);
-          if (raster_idx >= raster_cycles) goto rasterize_done;
-          screen_dot = 0;
-          screen_row += SCANLINE_INCR;
-          /* just in case the beam wrapped off the bottom of the screen */
-          if (screen_row >= SCREEN_HEIGHT) goto rasterize_done;
-        }
-
-      if (*bits != *last)
-        {
-          if (*bits & 1)
-            {
-              gdk_draw_point(my_GTK.apple_pixmap, mono_line1_gc,
-                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row);
-              gdk_draw_point(my_GTK.apple_pixmap, mono_line2_gc,
-                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row + 1);
-            }
-          else
-            {
-              gdk_draw_point(my_GTK.apple_pixmap, screen_da->style->black_gc,
-                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row);
-              gdk_draw_point(my_GTK.apple_pixmap, screen_da->style->black_gc,
-                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row + 1);
-            }
-
-          if ((SCREEN_BORDER_WIDTH + screen_dot) < my_GTK.screen_rect.x)
-            {
-              my_GTK.screen_rect.width += (my_GTK.screen_rect.x - (SCREEN_BORDER_WIDTH + screen_dot));
-              my_GTK.screen_rect.x = (SCREEN_BORDER_WIDTH + screen_dot);
-            }
-          else if ((SCREEN_BORDER_WIDTH + screen_dot + 1) > (my_GTK.screen_rect.x + my_GTK.screen_rect.width))
-            {
-              my_GTK.screen_rect.width = (SCREEN_BORDER_WIDTH + screen_dot + 1) - my_GTK.screen_rect.x;
-            }
-
-          if ((SCREEN_BORDER_HEIGHT + screen_row) < my_GTK.screen_rect.y)
-            {
-              my_GTK.screen_rect.height += (my_GTK.screen_rect.y - (SCREEN_BORDER_HEIGHT + screen_row));
-              my_GTK.screen_rect.y = (SCREEN_BORDER_HEIGHT + screen_row);
-            }
-          else if ((SCREEN_BORDER_HEIGHT + screen_row + 2) > (my_GTK.screen_rect.y + my_GTK.screen_rect.height))
-            my_GTK.screen_rect.height = (SCREEN_BORDER_HEIGHT + screen_row + 2) - my_GTK.screen_rect.y;
-        }
-
-      *last++ = *bits++;
-      ++screen_dot;
-    }
-
- rasterize_done:
-#if UPDATE_HERE
-  gtk_widget_draw(screen_da, &(my_GTK.screen_rect));
-  RESET_SCREEN_RECT();
-#endif
-}
-
-/************************************/
-
-void hgr_mono_mixed40_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row)
-{
-  /*
-   * theoretically there could be an error here if, for example, screen_row == 319 and so
-   * hgr_rasterizer() is called, but then in that function the beam wraps to the next line and
-   * draws something. Then we might get a small segment of HGR in the first line of the text
-   * area. This is only possible, however, when raster_cycles is quite large. I'm not sure
-   * that it is ever so large.
-   */
-
-  if (screen_row < 320) 
-    hgr_mono_rasterizer(raster_cycles, raster_idx, screen_dot, screen_row);
-  else
-    text40_mono_rasterizer(raster_cycles, raster_idx, screen_dot, screen_row);
-}
-
-/************************************/
-
-void hgr_mono_mixed80_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row)
-{
-  /*
-   * theoretically there could be an error here if, for example, screen_row == 319 and so
-   * hgr_rasterizer() is called, but then in that function the beam wraps to the next line and
-   * draws something. Then we might get a small segment of HGR in the first line of the text
-   * area. This is only possible, however, when raster_cycles is quite large. I'm not sure
-   * that it is ever so large.
-   */
-
-  if (screen_row < 320) 
-    hgr_mono_rasterizer(raster_cycles, raster_idx, screen_dot, screen_row);
-  else
-    text80_mono_rasterizer(raster_cycles, raster_idx, screen_dot, screen_row);
-}
-
-/************************************/
-
 void hgr_color_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row)
 {
   unsigned char * bits;
   unsigned char * last;
 
-  /*
-   * look for cases where the beam is over "clean" (unchanged) pixels
-   */
-
-  /* beam is currently left of the "dirty" area */
-  if (screen_dot < hgr_left[screen_row / 2])
-    {
-      /* advance to changed dots, and see if all the time is gone */
-      raster_idx += hgr_left[screen_row / 2] - screen_dot;
-      if (raster_idx >= raster_cycles) return;
-      screen_dot = hgr_left[screen_row / 2];
-    }
-  /* beam is to the right of the "dirty" area */
-  else if (screen_dot >= hgr_right[screen_row / 2])
-    {
-      /* advance to end of row and see if all the time is gone */
-      raster_idx += SCREEN_WIDTH - screen_dot;
-      if (raster_idx >= raster_cycles) return;
-      screen_dot = SCREEN_WIDTH;
-    }
-
-  /*
-   * try to mark parts of the current row "clean"
-   */
-
-  /* advance the left side of the "dirty" area, if possible */
-  if (screen_dot == hgr_left[screen_row / 2])
-    {
-      hgr_left[screen_row / 2] += (raster_cycles - raster_idx);
-
-      /* mark the whole row as "clean" if possible */
-      if (hgr_left[screen_row / 2] >= hgr_right[screen_row / 2])
-        {
-          hgr_right[screen_row / 2] = 0;
-        }
-    }
-  else if (screen_dot < hgr_right[screen_row / 2])
-    {
-      /* mark the end of the "dirty" area as now being "clean" */
-      if ((screen_dot + (raster_cycles - raster_idx)) >= hgr_right[screen_row / 2])
-        {
-          hgr_right[screen_row / 2] = screen_dot;
-        }
-    }
-
-  /*
-   * finally update when necessary
-   */
-
-  /* 80 char * 7 dots * screen_row / SCANLINE_INCR => (280 * screen_row) */
+  RASTER_SETUP(hgr_left, hgr_right);
 
   last = video_last + (280 * screen_row) + screen_dot;
   bits = hgr_bits + (280 * screen_row) + screen_dot;
@@ -2517,20 +2314,7 @@ void hgr_color_rasterizer (int raster_cycles, int raster_idx, int screen_dot, in
     {
       int hgrpix;
 
-      /* beam is now below the screen -- no more work to do */
-      if (screen_row >= SCREEN_HEIGHT) goto rasterize_done;
-
-      /* beam is now to the right of the screen -- check for a wrap */
-      if (screen_dot >= SCREEN_WIDTH)
-        {
-          /* wrap, cross the border and see if all the time is gone */
-          raster_idx += (SCAN_WIDTH - screen_dot);
-          if (raster_idx >= raster_cycles) goto rasterize_done;
-          screen_dot = 0;
-          screen_row += SCANLINE_INCR;
-          /* just in case the beam wrapped off the bottom of the screen */
-          if (screen_row >= SCREEN_HEIGHT) goto rasterize_done;
-        }
+      CHECK_RASTER();
 
       hgrpix = 0;
       if (*bits != *last) hgrpix |= 1;
@@ -2577,23 +2361,7 @@ void hgr_color_rasterizer (int raster_cycles, int raster_idx, int screen_dot, in
                              SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row + 1);
             }
 
-          if ((SCREEN_BORDER_WIDTH + screen_dot) < my_GTK.screen_rect.x)
-            {
-              my_GTK.screen_rect.width += (my_GTK.screen_rect.x - (SCREEN_BORDER_WIDTH + screen_dot));
-              my_GTK.screen_rect.x = (SCREEN_BORDER_WIDTH + screen_dot);
-            }
-          else if ((SCREEN_BORDER_WIDTH + screen_dot + 1) > (my_GTK.screen_rect.x + my_GTK.screen_rect.width))
-            {
-              my_GTK.screen_rect.width = (SCREEN_BORDER_WIDTH + screen_dot + 1) - my_GTK.screen_rect.x;
-            }
-
-          if ((SCREEN_BORDER_HEIGHT + screen_row) < my_GTK.screen_rect.y)
-            {
-              my_GTK.screen_rect.height += (my_GTK.screen_rect.y - (SCREEN_BORDER_HEIGHT + screen_row));
-              my_GTK.screen_rect.y = (SCREEN_BORDER_HEIGHT + screen_row);
-            }
-          else if ((SCREEN_BORDER_HEIGHT + screen_row + 2) > (my_GTK.screen_rect.y + my_GTK.screen_rect.height))
-            my_GTK.screen_rect.height = (SCREEN_BORDER_HEIGHT + screen_row + 2) - my_GTK.screen_rect.y;
+          TOUCH_DIRTY_AREA();
         }
 
       *last++ = *bits++;
@@ -2605,6 +2373,156 @@ void hgr_color_rasterizer (int raster_cycles, int raster_idx, int screen_dot, in
   gtk_widget_draw(screen_da, &(my_GTK.screen_rect));
   RESET_SCREEN_RECT();
 #endif
+  ;
+}
+
+/************************************/
+
+void hgr_color_dga_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row)
+{
+  unsigned char * bits;
+  unsigned char * last;
+  char * xdga_line1;
+  char * xdga_line2;
+
+  RASTER_SETUP(hgr_left, hgr_right);
+
+  last = video_last + (280 * screen_row) + screen_dot;
+  bits = hgr_bits + (280 * screen_row) + screen_dot;
+
+  xdga_line1  = xdga.base;
+  xdga_line1 += (xdga.bytes_per_line * (SCREEN_BORDER_HEIGHT + screen_row));
+  xdga_line1 += (xdga.bytes_per_pixel * (SCREEN_BORDER_WIDTH + screen_dot));
+  xdga_line2  = xdga_line1 + xdga.bytes_per_line;
+
+  for ( ; raster_idx < raster_cycles; ++raster_idx)
+    {
+      int hgrpix;
+
+      CHECK_RASTER_DGA();
+
+      hgrpix = 0;
+      if (*bits != *last) hgrpix |= 1;
+      if ((screen_dot < (SCREEN_WIDTH - 1)) && *(bits+1) != *(last+1)) hgrpix |= 2;
+      if ((screen_dot < (SCREEN_WIDTH - 2)) && *(bits+2) != *(last+2)) hgrpix |= 4;
+      if ((screen_dot < (SCREEN_WIDTH - 3)) && *(bits+3) != *(last+3)) hgrpix |= 8;
+
+      if (hgrpix)
+        {
+          if (*bits & 1)
+            {
+              hgrpix = 0x11;
+
+              if (screen_dot < (SCREEN_WIDTH - 1))
+                {
+                  if (*(bits+1) & 1)
+                    hgrpix |= 0x22;
+                }
+
+              if (screen_dot < (SCREEN_WIDTH - 2))
+                {
+                  if (*(bits+2) & 1)
+                    hgrpix |= 0x44;
+                }
+
+              if (screen_dot < (SCREEN_WIDTH - 3))
+                {
+                  if (*(bits+3) & 1)
+                    hgrpix |= 0x88;
+                }
+
+              hgrpix = 0xF & (hgrpix >> (4 - (screen_dot & 0x3)));
+
+              if (xdga.bytes_per_pixel == 1)
+                {
+                  *xdga_line1 = hgrpix;
+                  *xdga_line2 = hgrpix;
+                }
+              else if (xdga.bytes_per_pixel == 2)
+                {
+                  short pixel = xdga.pixel[hgrpix].halfword[HALFWORD_IDX];
+                  *(short *)xdga_line1 = pixel;
+                  *(short *)xdga_line2 = pixel;
+                }
+              else
+                {
+                  long pixel = xdga.pixel[hgrpix].word;
+                  *(long *)xdga_line1 = pixel;
+                  *(long *)xdga_line2 = pixel;
+                }
+            }
+          else
+            {
+              if (xdga.bytes_per_pixel == 1)
+                {
+                  *xdga_line1 = 0;
+                  *xdga_line2 = 0;
+                }
+              else if (xdga.bytes_per_pixel == 2)
+                {
+                  *(short *)xdga_line1 = 0;
+                  *(short *)xdga_line2 = 0;
+                }
+              else
+                {
+                  *(long *)xdga_line1 = 0;
+                  *(long *)xdga_line2 = 0;
+                }
+            }
+        }
+
+      *last++ = *bits++;
+      ++screen_dot;
+      xdga_line1 += xdga.bytes_per_pixel;
+      xdga_line2 += xdga.bytes_per_pixel;
+    }
+ rasterize_done:
+  ;
+}
+
+/************************************/
+
+void hgr_mono_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row)
+{
+  unsigned char * bits;
+  unsigned char * last;
+
+  RASTER_SETUP(hgr_left, hgr_right);
+
+  last = video_last + (280 * screen_row) + screen_dot;
+  bits = hgr_bits + (280 * screen_row) + screen_dot;
+
+  for ( ; raster_idx < raster_cycles; ++raster_idx)
+    {
+      CHECK_RASTER();
+
+      if (*bits != *last)
+        {
+          if (*bits & 1)
+            {
+              gdk_draw_point(my_GTK.apple_pixmap, mono_line1_gc,
+                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row);
+              gdk_draw_point(my_GTK.apple_pixmap, mono_line2_gc,
+                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row + 1);
+            }
+          else
+            {
+              gdk_draw_point(my_GTK.apple_pixmap, screen_da->style->black_gc,
+                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row);
+              gdk_draw_point(my_GTK.apple_pixmap, screen_da->style->black_gc,
+                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row + 1);
+            }
+
+          TOUCH_DIRTY_AREA();
+        }
+    }
+
+ rasterize_done:
+#if UPDATE_HERE
+  gtk_widget_draw(screen_da, &(my_GTK.screen_rect));
+  RESET_SCREEN_RECT();
+#endif
+  ;
 }
 
 /************************************/
@@ -2645,61 +2563,84 @@ void hgr_color_mixed80_rasterizer (int raster_cycles, int raster_idx, int screen
 
 /************************************/
 
+void hgr_color_mixed40_dga_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row)
+{
+  /*
+   * theoretically there could be an error here if, for example, screen_row == 319 and so
+   * hgr_rasterizer() is called, but then in that function the beam wraps to the next line and
+   * draws something. Then we might get a small segment of HGR in the first line of the text
+   * area. This is only possible, however, when raster_cycles is quite large. I'm not sure
+   * that it is ever so large.
+   */
+
+  if (screen_row < 320) 
+    hgr_color_dga_rasterizer(raster_cycles, raster_idx, screen_dot, screen_row);
+  else
+    text40_color_dga_rasterizer(raster_cycles, raster_idx, screen_dot, screen_row);
+}
+
+/************************************/
+
+void hgr_color_mixed80_dga_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row)
+{
+  /*
+   * theoretically there could be an error here if, for example, screen_row == 319 and so
+   * hgr_rasterizer() is called, but then in that function the beam wraps to the next line and
+   * draws something. Then we might get a small segment of HGR in the first line of the text
+   * area. This is only possible, however, when raster_cycles is quite large. I'm not sure
+   * that it is ever so large.
+   */
+
+  if (screen_row < 320) 
+    hgr_color_dga_rasterizer(raster_cycles, raster_idx, screen_dot, screen_row);
+  else
+    text80_color_dga_rasterizer(raster_cycles, raster_idx, screen_dot, screen_row);
+}
+
+/************************************/
+
+void hgr_mono_mixed40_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row)
+{
+  /*
+   * theoretically there could be an error here if, for example, screen_row == 319 and so
+   * hgr_rasterizer() is called, but then in that function the beam wraps to the next line and
+   * draws something. Then we might get a small segment of HGR in the first line of the text
+   * area. This is only possible, however, when raster_cycles is quite large. I'm not sure
+   * that it is ever so large.
+   */
+
+  if (screen_row < 320) 
+    hgr_mono_rasterizer(raster_cycles, raster_idx, screen_dot, screen_row);
+  else
+    text40_mono_rasterizer(raster_cycles, raster_idx, screen_dot, screen_row);
+}
+
+/************************************/
+
+void hgr_mono_mixed80_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row)
+{
+  /*
+   * theoretically there could be an error here if, for example, screen_row == 319 and so
+   * hgr_rasterizer() is called, but then in that function the beam wraps to the next line and
+   * draws something. Then we might get a small segment of HGR in the first line of the text
+   * area. This is only possible, however, when raster_cycles is quite large. I'm not sure
+   * that it is ever so large.
+   */
+
+  if (screen_row < 320) 
+    hgr_mono_rasterizer(raster_cycles, raster_idx, screen_dot, screen_row);
+  else
+    text80_mono_rasterizer(raster_cycles, raster_idx, screen_dot, screen_row);
+}
+
+/************************************/
+
 void dhgr_color_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row)
 {
   unsigned char * bits;
   unsigned char * last;
 
-  /*
-   * look for cases where the beam is over "clean" (unchanged) pixels
-   */
-
-  /* beam is currently left of the "dirty" area */
-  if (screen_dot < dhgr_left[screen_row / 2])
-    {
-      /* advance to changed dots, and see if all the time is gone */
-      raster_idx += dhgr_left[screen_row / 2] - screen_dot;
-      if (raster_idx >= raster_cycles) return;
-      screen_dot = dhgr_left[screen_row / 2];
-    }
-  /* beam is to the right of the "dirty" area */
-  else if (screen_dot >= dhgr_right[screen_row / 2])
-    {
-      /* advance to end of row and see if all the time is gone */
-      raster_idx += SCREEN_WIDTH - screen_dot;
-      if (raster_idx >= raster_cycles) return;
-      screen_dot = SCREEN_WIDTH;
-    }
-
-  /*
-   * try to mark parts of the current row "clean"
-   */
-
-  /* advance the left side of the "dirty" area, if possible */
-  if (screen_dot == dhgr_left[screen_row / 2])
-    {
-      dhgr_left[screen_row / 2] += (raster_cycles - raster_idx);
-
-      /* mark the whole row as "clean" if possible */
-      if (dhgr_left[screen_row / 2] >= dhgr_right[screen_row / 2])
-        {
-          dhgr_right[screen_row / 2] = 0;
-        }
-    }
-  else if (screen_dot < dhgr_right[screen_row / 2])
-    {
-      /* mark the end of the "dirty" area as now being "clean" */
-      if ((screen_dot + (raster_cycles - raster_idx)) >= dhgr_right[screen_row / 2])
-        {
-          dhgr_right[screen_row / 2] = screen_dot;
-        }
-    }
-
-  /*
-   * finally update when necessary
-   */
-
-  /* 80 char * 7 dots * screen_row / SCANLINE_INCR => (280 * screen_row) */
+  RASTER_SETUP(dhgr_left, dhgr_right);
 
   last = video_last + (280 * screen_row) + screen_dot;
   bits = dhgr_bits + (280 * screen_row) + screen_dot;
@@ -2708,20 +2649,7 @@ void dhgr_color_rasterizer (int raster_cycles, int raster_idx, int screen_dot, i
     {
       int dhgrpix;
 
-      /* beam is now below the screen -- no more work to do */
-      if (screen_row >= SCREEN_HEIGHT) goto rasterize_done;
-
-      /* beam is now to the right of the screen -- check for a wrap */
-      if (screen_dot >= SCREEN_WIDTH)
-        {
-          /* wrap, cross the border and see if all the time is gone */
-          raster_idx += (SCAN_WIDTH - screen_dot);
-          if (raster_idx >= raster_cycles) goto rasterize_done;
-          screen_dot = 0;
-          screen_row += SCANLINE_INCR;
-          /* just in case the beam wrapped off the bottom of the screen */
-          if (screen_row >= SCREEN_HEIGHT) goto rasterize_done;
-        }
+      CHECK_RASTER();
 
       dhgrpix = 0;
       if (*bits != *last) dhgrpix |= 1;
@@ -2755,23 +2683,7 @@ void dhgr_color_rasterizer (int raster_cycles, int raster_idx, int screen_dot, i
                              SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row + 1);
             }
 
-          if ((SCREEN_BORDER_WIDTH + screen_dot) < my_GTK.screen_rect.x)
-            {
-              my_GTK.screen_rect.width += (my_GTK.screen_rect.x - (SCREEN_BORDER_WIDTH + screen_dot));
-              my_GTK.screen_rect.x = (SCREEN_BORDER_WIDTH + screen_dot);
-            }
-          else if ((SCREEN_BORDER_WIDTH + screen_dot + 1) > (my_GTK.screen_rect.x + my_GTK.screen_rect.width))
-            {
-              my_GTK.screen_rect.width = (SCREEN_BORDER_WIDTH + screen_dot + 1) - my_GTK.screen_rect.x;
-            }
-
-          if ((SCREEN_BORDER_HEIGHT + screen_row) < my_GTK.screen_rect.y)
-            {
-              my_GTK.screen_rect.height += (my_GTK.screen_rect.y - (SCREEN_BORDER_HEIGHT + screen_row));
-              my_GTK.screen_rect.y = (SCREEN_BORDER_HEIGHT + screen_row);
-            }
-          else if ((SCREEN_BORDER_HEIGHT + screen_row + 2) > (my_GTK.screen_rect.y + my_GTK.screen_rect.height))
-            my_GTK.screen_rect.height = (SCREEN_BORDER_HEIGHT + screen_row + 2) - my_GTK.screen_rect.y;
+          TOUCH_DIRTY_AREA();
         }
 
       *last++ = *bits++;
@@ -2783,6 +2695,146 @@ void dhgr_color_rasterizer (int raster_cycles, int raster_idx, int screen_dot, i
   gtk_widget_draw(screen_da, &(my_GTK.screen_rect));
   RESET_SCREEN_RECT();
 #endif
+  ;
+}
+
+/************************************/
+
+void dhgr_color_dga_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row)
+{
+  unsigned char * bits;
+  unsigned char * last;
+  char * xdga_line1;
+  char * xdga_line2;
+
+  RASTER_SETUP(dhgr_left, dhgr_right);
+
+  last = video_last + (280 * screen_row) + screen_dot;
+  bits = dhgr_bits + (280 * screen_row) + screen_dot;
+
+  xdga_line1  = xdga.base;
+  xdga_line1 += (xdga.bytes_per_line * (SCREEN_BORDER_HEIGHT + screen_row));
+  xdga_line1 += (xdga.bytes_per_pixel * (SCREEN_BORDER_WIDTH + screen_dot));
+  xdga_line2  = xdga_line1 + xdga.bytes_per_line;
+
+  for ( ; raster_idx < raster_cycles; ++raster_idx)
+    {
+      int dhgrpix;
+
+      CHECK_RASTER_DGA();
+
+      dhgrpix = 0;
+      if (*bits != *last) dhgrpix |= 1;
+      if ((screen_dot < (SCREEN_WIDTH - 1)) && *(bits+1) != *(last+1)) dhgrpix |= 2;
+      if ((screen_dot < (SCREEN_WIDTH - 2)) && *(bits+2) != *(last+2)) dhgrpix |= 4;
+      if ((screen_dot < (SCREEN_WIDTH - 3)) && *(bits+3) != *(last+3)) dhgrpix |= 8;
+
+      if (dhgrpix)
+        {
+          if (*bits & 1)
+            {
+              dhgrpix = 0x11;
+
+              if ((screen_dot < (SCREEN_WIDTH - 1)) && (*(bits+1) & 1)) dhgrpix |= 0x22;
+              if ((screen_dot < (SCREEN_WIDTH - 2)) && (*(bits+2) & 1)) dhgrpix |= 0x44;
+              if ((screen_dot < (SCREEN_WIDTH - 3)) && (*(bits+3) & 1)) dhgrpix |= 0x88;
+
+              dhgrpix <<= 1;
+              dhgrpix = 0xF & (dhgrpix >> (4 - (screen_dot & 0x3)));
+
+              if (xdga.bytes_per_pixel == 1)
+                {
+                  *xdga_line1 = dhgrpix;
+                  *xdga_line2 = dhgrpix;
+                }
+              else if (xdga.bytes_per_pixel == 2)
+                {
+                  short pixel = xdga.pixel[dhgrpix].halfword[HALFWORD_IDX];
+                  *(short *)xdga_line1 = pixel;
+                  *(short *)xdga_line2 = pixel;
+                }
+              else
+                {
+                  long pixel = xdga.pixel[dhgrpix].word;
+                  *(long *)xdga_line1 = pixel;
+                  *(long *)xdga_line2 = pixel;
+                }
+            }
+          else
+            {
+              if (xdga.bytes_per_pixel == 1)
+                {
+                  *xdga_line1 = 0;
+                  *xdga_line2 = 0;
+                }
+              else if (xdga.bytes_per_pixel == 2)
+                {
+                  *(short *)xdga_line1 = 0;
+                  *(short *)xdga_line2 = 0;
+                }
+              else
+                {
+                  *(long *)xdga_line1 = 0;
+                  *(long *)xdga_line2 = 0;
+                }
+            }
+        }
+
+      *last++ = *bits++;
+      ++screen_dot;
+      xdga_line1 += xdga.bytes_per_pixel;
+      xdga_line2 += xdga.bytes_per_pixel;
+    }
+ rasterize_done:
+  ;
+}
+
+/************************************/
+
+void dhgr_mono_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row)
+{
+  unsigned char * bits;
+  unsigned char * last;
+
+  RASTER_SETUP(dhgr_left, dhgr_right);
+
+  last = video_last + (280 * screen_row) + screen_dot;
+  bits = dhgr_bits + (280 * screen_row) + screen_dot;
+
+  for ( ; raster_idx < raster_cycles; ++raster_idx)
+    {
+      CHECK_RASTER();
+
+      if (*bits != *last)
+        {
+          if (*bits & 1)
+            {
+              gdk_draw_point(my_GTK.apple_pixmap, mono_line1_gc,
+                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row);
+              gdk_draw_point(my_GTK.apple_pixmap, mono_line2_gc,
+                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row + 1);
+            }
+          else
+            {
+              gdk_draw_point(my_GTK.apple_pixmap, screen_da->style->black_gc,
+                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row);
+              gdk_draw_point(my_GTK.apple_pixmap, screen_da->style->black_gc,
+                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row + 1);
+            }
+
+          TOUCH_DIRTY_AREA();
+        }
+
+      *last++ = *bits++;
+      ++screen_dot;
+    }
+
+ rasterize_done:
+#if UPDATE_HERE
+  gtk_widget_draw(screen_da, &(my_GTK.screen_rect));
+  RESET_SCREEN_RECT();
+#endif
+  ;
 }
 
 /************************************/
@@ -2805,127 +2857,20 @@ void dhgr_color_mixed_rasterizer (int raster_cycles, int raster_idx, int screen_
 
 /************************************/
 
-void dhgr_mono_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row)
+void dhgr_color_mixed_dga_rasterizer (int raster_cycles, int raster_idx, int screen_dot, int screen_row)
 {
-  unsigned char * bits;
-  unsigned char * last;
-
   /*
-   * look for cases where the beam is over "clean" (unchanged) pixels
+   * theoretically there could be an error here if, for example, screen_row == 319 and so
+   * dhgr_rasterizer() is called, but then in that function the beam wraps to the next line and
+   * draws something. Then we might get a small segment of DHGR in the first line of the text
+   * area. This is only possible, however, when raster_cycles is quite large. I'm not sure
+   * that it is ever so large.
    */
 
-  /* beam is currently left of the "dirty" area */
-  if (screen_dot < dhgr_left[screen_row / 2])
-    {
-      /* advance to changed dots, and see if all the time is gone */
-      raster_idx += dhgr_left[screen_row / 2] - screen_dot;
-      if (raster_idx >= raster_cycles) return;
-      screen_dot = dhgr_left[screen_row / 2];
-    }
-  /* beam is to the right of the "dirty" area */
-  else if (screen_dot >= dhgr_right[screen_row / 2])
-    {
-      /* advance to end of row and see if all the time is gone */
-      raster_idx += SCREEN_WIDTH - screen_dot;
-      if (raster_idx >= raster_cycles) return;
-      screen_dot = SCREEN_WIDTH;
-    }
-
-  /*
-   * try to mark parts of the current row "clean"
-   */
-
-  /* advance the left side of the "dirty" area, if possible */
-  if (screen_dot == dhgr_left[screen_row / 2])
-    {
-      dhgr_left[screen_row / 2] += (raster_cycles - raster_idx);
-
-      /* mark the whole row as "clean" if possible */
-      if (dhgr_left[screen_row / 2] >= dhgr_right[screen_row / 2])
-        {
-          dhgr_right[screen_row / 2] = 0;
-        }
-    }
-  else if (screen_dot < dhgr_right[screen_row / 2])
-    {
-      /* mark the end of the "dirty" area as now being "clean" */
-      if ((screen_dot + (raster_cycles - raster_idx)) >= dhgr_right[screen_row / 2])
-        {
-          dhgr_right[screen_row / 2] = screen_dot;
-        }
-    }
-
-  /*
-   * finally update when necessary
-   */
-
-  /* 80 char * 7 dots * screen_row / SCANLINE_INCR => (280 * screen_row) */
-
-  last = video_last + (280 * screen_row) + screen_dot;
-  bits = dhgr_bits + (280 * screen_row) + screen_dot;
-
-  for ( ; raster_idx < raster_cycles; ++raster_idx)
-    {
-      /* beam is now below the screen -- no more work to do */
-      if (screen_row >= SCREEN_HEIGHT) goto rasterize_done;
-
-      /* beam is now to the right of the screen -- check for a wrap */
-      if (screen_dot >= SCREEN_WIDTH)
-        {
-          /* wrap, cross the border and see if all the time is gone */
-          raster_idx += (SCAN_WIDTH - screen_dot);
-          if (raster_idx >= raster_cycles) goto rasterize_done;
-          screen_dot = 0;
-          screen_row += SCANLINE_INCR;
-          /* just in case the beam wrapped off the bottom of the screen */
-          if (screen_row >= SCREEN_HEIGHT) goto rasterize_done;
-        }
-
-      if (*bits != *last)
-        {
-          if (*bits & 1)
-            {
-              gdk_draw_point(my_GTK.apple_pixmap, mono_line1_gc,
-                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row);
-              gdk_draw_point(my_GTK.apple_pixmap, mono_line2_gc,
-                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row + 1);
-            }
-          else
-            {
-              gdk_draw_point(my_GTK.apple_pixmap, screen_da->style->black_gc,
-                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row);
-              gdk_draw_point(my_GTK.apple_pixmap, screen_da->style->black_gc,
-                             SCREEN_BORDER_WIDTH + screen_dot, SCREEN_BORDER_HEIGHT + screen_row + 1);
-            }
-
-          if ((SCREEN_BORDER_WIDTH + screen_dot) < my_GTK.screen_rect.x)
-            {
-              my_GTK.screen_rect.width += (my_GTK.screen_rect.x - (SCREEN_BORDER_WIDTH + screen_dot));
-              my_GTK.screen_rect.x = (SCREEN_BORDER_WIDTH + screen_dot);
-            }
-          else if ((SCREEN_BORDER_WIDTH + screen_dot + 1) > (my_GTK.screen_rect.x + my_GTK.screen_rect.width))
-            {
-              my_GTK.screen_rect.width = (SCREEN_BORDER_WIDTH + screen_dot + 1) - my_GTK.screen_rect.x;
-            }
-
-          if ((SCREEN_BORDER_HEIGHT + screen_row) < my_GTK.screen_rect.y)
-            {
-              my_GTK.screen_rect.height += (my_GTK.screen_rect.y - (SCREEN_BORDER_HEIGHT + screen_row));
-              my_GTK.screen_rect.y = (SCREEN_BORDER_HEIGHT + screen_row);
-            }
-          else if ((SCREEN_BORDER_HEIGHT + screen_row + 2) > (my_GTK.screen_rect.y + my_GTK.screen_rect.height))
-            my_GTK.screen_rect.height = (SCREEN_BORDER_HEIGHT + screen_row + 2) - my_GTK.screen_rect.y;
-        }
-
-      *last++ = *bits++;
-      ++screen_dot;
-    }
-
- rasterize_done:
-#if UPDATE_HERE
-  gtk_widget_draw(screen_da, &(my_GTK.screen_rect));
-  RESET_SCREEN_RECT();
-#endif
+  if (screen_row < 320) 
+    dhgr_color_dga_rasterizer(raster_cycles, raster_idx, screen_dot, screen_row);
+  else
+    text80_color_dga_rasterizer(raster_cycles, raster_idx, screen_dot, screen_row);
 }
 
 /************************************/

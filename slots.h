@@ -35,8 +35,7 @@ enum
   NUM_CARDSLOTS
 };
 
-typedef void (* init_func_t) (void *, /* GdkWindow * */
-                              unsigned short,
+typedef void (* init_func_t) (unsigned short,
                               cpu_state_t *,
                               r_func_t *,
                               w_func_t *);

@@ -19,6 +19,7 @@
 #ifndef INCLUDED_APPLE_H
 #define INCLUDED_APPLE_H
 
+#include "xdga.h"
 #include <gtk/gtk.h>
 
 /* allow for border */
@@ -26,8 +27,8 @@
 #define RASTER_TEST
 
 #if 1
-#define WINDOW_WIDTH  644
-#define WINDOW_HEIGHT 484
+#define WINDOW_WIDTH  640
+#define WINDOW_HEIGHT 480
 #else
 #define WINDOW_WIDTH  560
 #define WINDOW_HEIGHT 384
@@ -41,8 +42,8 @@
 
 #define SCANLINE_INCR 2
 
-#define SCREEN_BORDER_WIDTH  ((WINDOW_WIDTH - SCREEN_WIDTH) / 2)
-#define SCREEN_BORDER_HEIGHT ((WINDOW_HEIGHT - SCREEN_HEIGHT) / 2)
+extern int SCREEN_BORDER_WIDTH;
+extern int SCREEN_BORDER_HEIGHT;
 
 #define RESET_SCREEN_RECT() \
   my_GTK.screen_rect.x      = WINDOW_WIDTH; \
@@ -71,6 +72,7 @@ extern struct GTK_data my_GTK;
 /* I use this for both GTK+ and SDL */
 
 extern GdkRectangle screen_rect;
+extern xdga_info_t xdga;
 
 /* Apple II internal state */
 
@@ -97,6 +99,7 @@ extern unsigned char option_full_scan;
 extern unsigned char option_limit_speed;
 extern unsigned char option_use_sdl;
 extern unsigned char option_use_gtk;
+extern unsigned char option_use_xdga;
 
 /* temporary names */
 
