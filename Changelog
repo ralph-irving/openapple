@@ -1,0 +1,68 @@
+
+8 April 2001
++ Removed all old video generation code.
+
+7 April 2001
++ Threw out that dhgr color mode, implemented hgr color in the rasterize function instead
+  of in the draw function. Surprisingly quickly the colors were there and were correct.
+  As a side effect, the display now has surprisingly authentic color fringing.
++ Implemented dhgr color the same as I did hgr. Works well.
++ The hgr mode had a few small bugs. One was manifested as flickering of scattered pixels
+  in the Accolade Comics splash screens. This bug kicked my butt for about 5 hours. I
+  would think a lot and try a lot of stuff out till suddenly I discovered a problem and
+  *some* of the flickering would go away. Eventually got it all at 3:30 am and so I tried
+  Prince of Persia, which has the problem of seemingly random segments of lines left out
+  of one of the hgr screens. Those segments then flicker when the program animates using
+  page flipping. I had hoped that the Accolade fixes would solve the PoP problem too.
+  No such luck.
++ Speed update-- idle in basic: ~7Mhz, 80 col basic scroll: ~1.2Mhz, 40 col basic scroll: ~0.9Mhz,
+  disk II reading: ~5Mhz, Graphics stuff depending on the animation method: ~2Mhz - ~4Mhz.
+
+1 April 2001
++ Added double hires rasterized video in B&W, Added color modes for everything except hires,
+  although the double hires colors don't work quite right yet.
+
+31 March 2001
++ Added lores, double lores, and hires rasterized graphics modes -- all B&W for now. At least
+  I can play Wavy Navy again... And it's faster than before: ~4Mhz on the laptop.
+
+26 March 2001
++ Worked on improving the speed of the rasterization. Does curses-style management of "dirty"
+  segments of lines. Seems to work quite well. It's still slow when there's a lot to update:
+  appx. 1Mhz on my PII 300, but on average it's now faster than before.
+
+25 March 2001
++ Added 80 column text rasterized video. This involved working out how to let the raster beam know
+  when it should redraw a line because the video mode has changed. Solved the "transparent black"
+  problem mentioned below. Wrote a demo program to show that the rasterization really works
+  transparently when the video mode is changed.
+
+19 March 2001
++ On the 700Mhz Duron, idle speed is ~3.5 Mhz and scrolling speed is ~1.8 Mhz, but the display
+  doesn't draw quite right; Black isn't drawn so the window looks transparent.
+
+18 March 2001
++ Implemented a first-draft rasterized video supporting only 40-column text mode. It's still quite
+  slow -- the emulator slows to about 0.8-0.9 Mhz on my machine when there's a lot to update; during
+  scrolling, for example. Idle speed (with just cursor blinking) is about 1.8 Mhz. It's just taking
+  too long for something sitting in the incredible sensitive main instruction execution loop.
+
+  An example of the sensitivity: Taking out the following if-statement increased the idle speed of
+  of the emulation from 1.1 Mhz to the current 1.8 Mhz:
+
+    if (0 == (raster_dot % 14))
+      {
+        ++bits;
+        ++last;
+      }
+
+17 March 2001
++ Finished the AE Ramworks emulation supporting 1Mb bank-switched memory
+
+14 March 2001 (0.52)
++ Fixed a stupid big whereby the emulator crashed if X was something other than 24 or 32 bpp
+
+11 March 2001 (0.51)
++ Repaired a decimal mode subtraction bug
++ Added 80 column, low resolution mixed mode that I overlooked before
++ Fixed the "Columns //e" problem by rebuilding the video on every mode switch (this is kinda ugly)
