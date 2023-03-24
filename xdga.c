@@ -23,7 +23,7 @@
 #include <stdio.h>
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
-#include <X11/extensions/xf86dga.h>
+#include <X11/extensions/Xxf86dga.h>
 
 /* need DGA version 2.0 or better */
 #define REQUIRED_MAJOR 2
